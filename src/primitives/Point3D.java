@@ -10,7 +10,7 @@ public class Point3D {
     Coordinate y;
     Coordinate z;
 
-    static Point3D ZERO=new Point3D(0,0,0);
+    public static Point3D ZERO=new Point3D(0,0,0);
     /**
      *
      * @param _x coordinate for x axis
@@ -57,5 +57,16 @@ public class Point3D {
                            z.coord+vector.head.z.coord);
     }
 
+    public Vector subtract(Point3D otherPoint){
+        return new Vector(new Point3D(this.x.coord-otherPoint.x.coord,this.y.coord-otherPoint.y.coord,this.z.coord-otherPoint.z.coord));
+    }
 
+    @Override
+    public String toString() {
+        return "Point3D:" +
+                "x=" + x +
+                ", y=" + y +
+                ", z=" + z +
+                '.';
+    }
 }

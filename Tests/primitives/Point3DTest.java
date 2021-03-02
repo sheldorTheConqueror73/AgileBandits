@@ -6,12 +6,16 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class Point3DTest {
 
-    Point3D p1=new Point3D(1.0d,2.0d,3.0d);
-    Point3D p2=new Point3D(1,2,3);
+    Point3D p1=new Point3D(1,2,3);
+    Point3D p2=new Point3D(1.0,2.0,3.0);
+    Point3D p3=new Point3D(-1,-2,-3);
+    Point3D p4=new Point3D(-1,-2,-3);
     @Test
     void testEquals() {
-        boolean qeuality=p1.equals(p2);
-        assertTrue(qeuality);
+        assertTrue(p1.equals(p2));
+        assertTrue(p1.equals(p1));
+        assertTrue(p3.equals(p4));
+        assertFalse(p3.equals(p1));
     }
 
     @Test
@@ -20,5 +24,10 @@ class Point3DTest {
         double result =p3.distanceSquared(p1);
         System.out.println(result);
        assertEquals(126.35,result,0.2);
+    }
+
+    @Test
+    void subtract() {
+
     }
 }
