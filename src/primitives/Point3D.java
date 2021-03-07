@@ -3,7 +3,8 @@ package primitives;
 import java.util.Objects;
 
 /**
- *
+ *Class Point3D is the class representing a 3D point for Cartesian
+ *  coordinate system.
  */
 public class Point3D {
     Coordinate x;
@@ -21,13 +22,23 @@ public class Point3D {
         this(_x.coord,_y.coord,_z.coord);
     }
 
+    /**
+     *
+     * @param _x coordinate for x axis
+     * @param _y coordinate for y axis
+     * @param _z coordinate for z axis
+     */
     public Point3D(double _x, double _y, double _z) {
         this.x = new Coordinate(_x);
         this.y = new Coordinate(_y);
         this.z = new Coordinate(_z);
     }
 
-
+    /**
+     *
+     * @param o object to compare to
+     * @return true if b oth objects are equal
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,10 +47,11 @@ public class Point3D {
         return x.equals(point3D.x) && y.equals(point3D.y) && z.equals(point3D.z);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(x.coord, y.coord, z.coord);
-    }
+    /**
+     *
+     * @param otherPoint another point
+     * @return distance squared from second point
+     */
 
     public double distanceSquared(Point3D otherPoint){
         return ((otherPoint.x.coord-x.coord)*(otherPoint.x.coord-x.coord))+
@@ -47,16 +59,31 @@ public class Point3D {
                 ((otherPoint.z.coord-z.coord)*(otherPoint.z.coord-z.coord));
     }
 
+    /**
+     *
+     * @param otherPoint another point
+     * @return distance from second point
+     */
     public double distance(Point3D otherPoint){
         return Math.sqrt(distanceSquared(otherPoint));
     }
 
+    /**
+     *
+     * @param vector another vector
+     * @return adds a point to a vector and returns new point
+     */
     public Point3D add(Vector vector){
         return new Point3D(x.coord+vector.head.x.coord,
                            y.coord+vector.head.y.coord,
                            z.coord+vector.head.z.coord);
     }
 
+    /**
+     *
+     * @param otherPoint another point
+     * @return subtracts a point from a vector and returns new vector
+     */
     public Vector subtract(Point3D otherPoint){
         return new Vector(new Point3D(this.x.coord-otherPoint.x.coord,this.y.coord-otherPoint.y.coord,this.z.coord-otherPoint.z.coord));
     }
