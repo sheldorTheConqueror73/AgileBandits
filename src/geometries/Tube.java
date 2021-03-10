@@ -1,7 +1,8 @@
 package geometries;
 
+import java.util.List;
 import primitives.*;
-
+import static primitives.Util.*;
 /**
  * Class Tube is the class representing a tube for Cartesian
  * coordinate system.
@@ -38,7 +39,20 @@ public class Tube implements Geometry{
 
     @Override
     public Vector getNormal(Point3D point) {
-        return null;
+        Point3D po=axisRay.getP0();
+        Vector v=axisRay.getDir();
+
+        Vector vector=point.subtract(po);
+
+        double projection=vector.dotProduct(v);
+
+        if(!isZero(projection)){
+            po= po.add(v.scale(projection));
+        }
+
+        Vector check=point.subtract(po);
+
+        return check.normalize();
     }
 
     @Override

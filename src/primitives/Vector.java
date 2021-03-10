@@ -22,7 +22,7 @@ public class Vector {
         if(head.equals(ZERO)){
             throw new IllegalArgumentException("head cannot be point (0,0,0)");
         }
-        this.head = head;
+        this.head =new Point3D(head.x, head.y, head.z);
     }
 
     /**
@@ -76,6 +76,9 @@ public class Vector {
      * @return vector scaled by k
      */
     public Vector scale(double k){
+        if(k==0d){
+            throw  new IllegalArgumentException("scale cannot be zero");
+        }
         return new Vector(head.x.coord*k,head.y.coord*k,head.z.coord*k);
     }
 
