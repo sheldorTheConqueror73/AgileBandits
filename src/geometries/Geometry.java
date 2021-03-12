@@ -8,5 +8,10 @@ import primitives.*;
  */
 public interface Geometry {
 
+    /**
+     * returns normal
+     * @param point
+     * @return
+     */
     public Vector getNormal(Point3D point);
 }

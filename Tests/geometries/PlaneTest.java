@@ -9,7 +9,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class PlaneTest {
 
     @Test
+
     void getNormal() {
+        // ============ Equivalence Partitions Tests ==============
         Plane plane = new Plane(
                 new Point3D(0, 0, 1),
                 new Point3D(1, 0, 0),

@@ -37,6 +37,11 @@ public class Sphere implements Geometry{
         return radius;
     }
 
+    /**
+     * returns normal
+     * @param point
+     * @return
+     */
     @Override
     public Vector getNormal(Point3D point) {
         return (point.subtract(center)).normalize();

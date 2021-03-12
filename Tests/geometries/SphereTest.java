@@ -10,6 +10,8 @@ class SphereTest {
 
     @Test
     void getNormal() {
+        // ============ Equivalence Partitions Tests ==============
+
         Point3D point=new Point3D(1,2,3);
         Sphere sphere=new Sphere(new Point3D(1,1,1),1);
         assertEquals(new Vector(0,1/Math.sqrt(5),2/Math.sqrt(5)),sphere.getNormal(point),"ERROR:Bad normal to sphere");

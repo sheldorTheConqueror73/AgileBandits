@@ -37,6 +37,11 @@ public class Tube implements Geometry{
         return radius;
     }
 
+    /**
+     * returns normal
+     * @param point
+     * @return
+     */
     @Override
     public Vector getNormal(Point3D point) {
         Point3D po=axisRay.getP0();
