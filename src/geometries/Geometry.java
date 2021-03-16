@@ -6,7 +6,7 @@ import primitives.*;
  * interface Geometry is the class representing a Geometry for Cartesian
  * coordinate system.
  */
-public interface Geometry {
+public interface Geometry  extends  Intersectable{
 
     /**
      * returns normal

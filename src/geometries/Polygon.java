@@ -97,4 +97,9 @@ public class Polygon implements Geometry {
                 "vertices=" + vertices +
                 ", plane=" + plane ;
     }
+
+    @Override
+    public List<Point3D> findIntersections(Ray ray) {
+        return null;
+    }
 }

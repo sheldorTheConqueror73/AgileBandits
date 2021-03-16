@@ -19,4 +19,9 @@ class PlaneTest {
         double sqrt3 = Math.sqrt(1d / 3);
         assertEquals( new Vector(sqrt3, sqrt3, sqrt3), plane.getNormal(new Point3D(4,5,6)),"Bad normal to plane");
     }
+
+    @Test
+    void findIntersections() {
+        //TODO good luck
+    }
 }
