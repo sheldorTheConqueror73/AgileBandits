@@ -132,7 +132,7 @@ public class PolygonTest {
                         new Vector(2, -1, 1.5))
         );
         //BVA1 zero problem ------ to fix
-       // assertEquals(List.of(new Point3D(6,2,1.5)),result,"ERROR:wrong point");
+        assertEquals(null,result,"ERROR:wrong point");
 
         result = rectangle.findIntersections(
                 new Ray(
@@ -140,7 +140,7 @@ public class PolygonTest {
                         new Vector(0, -1, 1.5))
         );
         //BVA2 zero problem ------ to fix
-       // assertEquals(List.of(new Point3D(4,2,1.5)),result,"ERROR:wrong point");
+        assertEquals(null,result,"ERROR:wrong point");
 
         result = rectangle.findIntersections(
                 new Ray(

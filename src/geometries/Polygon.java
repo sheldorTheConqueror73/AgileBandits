@@ -104,35 +104,37 @@ public class Polygon implements Geometry {
     @Override
     public List<Point3D> findIntersections(Ray ray) {
         Vector[] arrVector = new Vector[vertices.size()];
+        Vector[] arrNormal = new Vector[vertices.size()];
         Point3D p0 = ray.getP0();
         for (int i = 0; i < arrVector.length; i++) {
             arrVector[i] = new Vector(this.vertices.get(i).subtract(p0).getHead());
         }
 
-        Vector  temp = arrVector[0].crossProduct(arrVector[1]);
-        temp.normalize();
-        boolean sign = ray.getDir().dotProduct(temp) > 0;
-        for (int i = 0; i < arrVector.length - 1; i++) {
+        arrNormal[0]=arrVector[0].crossProduct(arrVector[1]);
+        arrNormal[0].normalize();
+        boolean sign=ray.getDir().dotProduct(arrNormal[0])>0;
 
-            arrVector[i] = arrVector[i].crossProduct(arrVector[i + 1]);
-            arrVector[i].normalize();
+        for (int i = 1; i < arrVector.length - 1; i++) {
+            arrNormal[i]=arrVector[i].crossProduct(arrVector[i+1]);
+            arrNormal[i].normalize();
 
-            if (isZero(alignZero(ray.getDir().dotProduct(arrVector[i])))) {
+            if (isZero(alignZero(ray.getDir().dotProduct(arrNormal[i])))) {
                 return null;
             }
 
-            boolean signTemp = ray.getDir().dotProduct(arrVector[i]) > 0;
+            boolean signTemp = ray.getDir().dotProduct(arrNormal[i]) > 0;
             if (sign != signTemp) {
                 return null;
             }
 
         }
-        arrVector[arrVector.length - 1] = arrVector[arrVector.length - 1].crossProduct(temp);
-        arrVector[arrVector.length - 1].normalize();
-        if (isZero(alignZero(ray.getDir().dotProduct(arrVector[arrVector.length - 1])))) {
+        arrNormal[arrNormal.length - 1] = arrVector[arrVector.length - 1].crossProduct(arrVector[0]);
+        arrNormal[arrNormal.length - 1].normalize();
+        if (isZero(alignZero(ray.getDir().dotProduct(arrNormal[arrNormal.length - 1])))) {
             return null;
         }
-        if (sign && ray.getDir().dotProduct(arrVector[arrVector.length - 1]) < 0) {
+        boolean signTemp=ray.getDir().dotProduct(arrNormal[arrNormal.length - 1])> 0;
+        if (sign!=signTemp) {
             return null;
         }
         return plane.findIntersections(ray);
