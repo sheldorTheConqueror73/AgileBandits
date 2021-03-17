@@ -41,14 +41,38 @@ class TriangleTest {
                         new Vector(-1.66, -0.26, 0.26))
         );
         //EP2
-        assertEquals(null,result,"ERROR:");
+        assertEquals(null,result,"EP: Outside against edge");
 
         result = triangle.findIntersections(
                 new Ray(
-                        new Point3D(2.46, 2.7, 0),
-                        new Vector(-1.66, -0.26, 0.26))
+                        new Point3D(0.65, 4.47, 2.02),
+                        new Vector(1.73, -2.01, -2.02))
         );
-        //EP2
-        assertEquals(null,result,"ERROR:");
+        //EP3
+        assertEquals(null,result,"EP:Outside against vertex");
+
+        result = triangle.findIntersections(
+                new Ray(
+                        new Point3D(2.29, 2.41, 0),
+                        new Vector(-0.93, -0.09, 0.6))
+        );
+        //BVA1
+        assertEquals(null,result,"BVA:On edge");
+
+        result = triangle.findIntersections(
+                new Ray(
+                        new Point3D(2.31, 2.28, 0),
+                        new Vector(-0.71, -1.08, 0))
+        );
+        //BVA2
+        assertEquals(null,result,"BVA: In vertex");
+
+        result = triangle.findIntersections(
+                new Ray(
+                        new Point3D(1.81, 0.24, -0.52),
+                        new Vector(0.38, -1.79, -0.96))
+        );
+        //BVA3
+        assertEquals(null,result,"BVA: In vertex");
     }
 }
