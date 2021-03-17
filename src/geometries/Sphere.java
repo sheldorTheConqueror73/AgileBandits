@@ -54,12 +54,19 @@ public class Sphere extends RadialGeometry implements Geometry{
 
     @Override
     public List<Point3D> findIntersections(Ray ray) {
+        Vector  u;
+        double tm,d;
+        if(center.equals(ray.getP0())){
+            tm=0;
+            d=0;
+        }else {
+            u = center.subtract(ray.getP0());
 
-       Vector  u = center.subtract(ray.getP0());
-       Vector v = ray.getDir();
-       double tm = u.dotProduct(v);
-       double d = alignZero(Math.sqrt(u.lengthSquared() - tm*tm));
 
+            Vector v = ray.getDir();
+            tm = u.dotProduct(v);
+            d = alignZero(Math.sqrt(u.lengthSquared() - tm * tm));
+        }
        if(d> _radius){
            return null;
        }

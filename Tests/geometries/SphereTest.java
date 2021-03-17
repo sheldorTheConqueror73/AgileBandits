@@ -104,14 +104,14 @@ class SphereTest {
         assertEquals(List.of(new Point3D(1.708793099341218,0.31945402113055094,0.6289367779910728)), result, "BVA:Ray starts inside");
 
         // TC16: Ray starts at the center (1 points)
-       /* result = sphere.findIntersections(
+       result = sphere.findIntersections(
                 new Ray(
                         new Point3D(1, 0, 0),
                         new Vector(0.71, 0.32, 0.63)
                 )
-        );*/
+        );
     // to fix----------------------------------------
-       // assertEquals(List.of(new Point3D(1.708793099341218,0.31945402113055094,0.6289367779910728)), result, "BVA:Ray starts inside");
+        assertEquals(List.of(new Point3D(1.7087960691552895,0.3194573832812572,0.6289317233349752)), result, "BVA:Ray starts at the center");
 
         // TC17: Ray starts at sphere and goes outside (0 points)
         result = sphere.findIntersections(
