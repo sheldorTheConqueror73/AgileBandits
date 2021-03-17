@@ -1,7 +1,9 @@
 package geometries;
 
 import java.util.List;
+
 import primitives.*;
+
 import static primitives.Util.*;
 
 /**
@@ -83,6 +85,7 @@ public class Polygon implements Geometry {
 
     /**
      * returns normal
+     *
      * @param point
      * @return
      */
@@ -95,11 +98,43 @@ public class Polygon implements Geometry {
     public String toString() {
         return "Polygon:" +
                 "vertices=" + vertices +
-                ", plane=" + plane ;
+                ", plane=" + plane;
     }
 
     @Override
     public List<Point3D> findIntersections(Ray ray) {
-        return null;
+        Vector[] arrVector = new Vector[vertices.size()];
+        Point3D p0 = ray.getP0();
+        for (int i = 0; i < arrVector.length; i++) {
+            arrVector[i] = new Vector(this.vertices.get(i).subtract(p0).getHead());
+        }
+
+        Vector  temp = arrVector[0].crossProduct(arrVector[1]);
+        temp.normalize();
+        boolean sign = ray.getDir().dotProduct(temp) > 0;
+        for (int i = 0; i < arrVector.length - 1; i++) {
+
+            arrVector[i] = arrVector[i].crossProduct(arrVector[i + 1]);
+            arrVector[i].normalize();
+
+            if (isZero(alignZero(ray.getDir().dotProduct(arrVector[i])))) {
+                return null;
+            }
+
+            boolean signTemp = ray.getDir().dotProduct(arrVector[i]) > 0;
+            if (sign != signTemp) {
+                return null;
+            }
+
+        }
+        arrVector[arrVector.length - 1] = arrVector[arrVector.length - 1].crossProduct(temp);
+        arrVector[arrVector.length - 1].normalize();
+        if (isZero(alignZero(ray.getDir().dotProduct(arrVector[arrVector.length - 1])))) {
+            return null;
+        }
+        if (sign && ray.getDir().dotProduct(arrVector[arrVector.length - 1]) < 0) {
+            return null;
+        }
+        return plane.findIntersections(ray);
     }
 }

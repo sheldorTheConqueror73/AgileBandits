@@ -1,7 +1,7 @@
 
 package primitives;
 
-import static primitives.Util.*;
+import  primitives.Util.*;
 
 /**
  * Class Coordinate is the basic class representing a coordinate for Cartesian
@@ -21,7 +21,7 @@ public final class Coordinate {
      */
     public Coordinate(double coord) {
         // if it too close to zero make it zero
-        this.coord = alignZero(coord);
+        this.coord = Util.alignZero(coord);
     }
 
     /**
@@ -35,7 +35,7 @@ public final class Coordinate {
         if (obj == null) return false;
         if (!(obj instanceof Coordinate)) return false;
         Coordinate other = (Coordinate)obj;
-        return isZero(coord - other.coord);
+        return Util.isZero(coord - other.coord);
     }
 
     @Override

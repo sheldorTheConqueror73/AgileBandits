@@ -22,6 +22,22 @@ public class Point3D {
         this(_x.coord,_y.coord,_z.coord);
     }
 
+    public double getX() {
+        return x.coord;
+    }
+
+    public double getY() {
+        return y.coord;
+    }
+
+    public double getZ() {
+        return z.coord;
+    }
+
+    public static Point3D getZERO() {
+        return ZERO;
+    }
+
     /**
      *
      * @param _x coordinate for x axis
