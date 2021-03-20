@@ -52,6 +52,11 @@ public class Sphere extends RadialGeometry implements Geometry{
                 ", radius=" + _radius ;
     }
 
+    /**
+     * finds intersections with sphere and ray
+     * @param ray ray to intersect
+     * @return a list of intersection points or null if there are none
+     */
     @Override
     public List<Point3D> findIntersections(Ray ray) {
         Vector  u;

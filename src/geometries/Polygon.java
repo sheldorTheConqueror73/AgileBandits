@@ -101,6 +101,11 @@ public class Polygon implements Geometry {
                 ", plane=" + plane;
     }
 
+    /**
+     * finds intersections with polygon and ray
+     * @param ray ray to intersect
+     * @return a list of intersection points or null if there are none
+     */
     @Override
     public List<Point3D> findIntersections(Ray ray) {
         Vector[] arrVector = new Vector[vertices.size()];
