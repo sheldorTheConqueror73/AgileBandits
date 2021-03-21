@@ -44,12 +44,15 @@ class PlaneTest {
                 new Point3D(2,0,0)
 
         );
-        r1=new Ray(new Point3D(2,0,0), new Vector(-2,0,-2));
         r1=new Ray(new Point3D(0,-4,0), new Vector(0.7,-3,0));
          result=plane.findIntersections(r1);
         assertEquals(null,result,"EP2: result should be null");
 
-        //
+        //TC03:  ray does not intersect p0 start at the plane
+        r1=new Ray(new Point3D(0,0,2), new Vector(0,4,-2));
+        result=plane.findIntersections(r1);
+        assertEquals(null,result,"BVA1: result should be null");
+
 
     }
 }
