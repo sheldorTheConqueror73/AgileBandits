@@ -1,32 +1,64 @@
 
 package elements;
 
-import geometries.Polygon;
-import geometries.Sphere;
-import org.junit.jupiter.api.Test;
-import primitives.*;
 
+import geometries.*;
+import primitives.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import java.util.List;
 
 
 public class CameraIntegrationsTests {
-    @Test
-    void integrationsCameraTests() {
-        Camera camera = new Camera(Point3D.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0)).setVpDistance(1);
-        Sphere sphere=new Sphere(1,new Point3D(0,0,-3));
-        //Ray result=camera.constructRayThroughPixel(3,3,)
 
-    }
-
-    private boolean testfunc(Camera camera,List<Ray> rays){
-        int index=0;
+    void testViewPlane(Camera camera, Intersectable inter,int expected,String testName){
+        int count=0;
         for(int i=0;i<3;i++){
             for(int j=0;j<3;j++){
-                if(!camera.constructRayThroughPixel(3,3,i,j).equals(rays.get(index++))){
-                    return false;
-                }
+                List<Point3D> result=inter.findIntersections(camera.constructRayThroughPixel(3,3,j,i));
+                count+= result!=null? result.size() : 0;
             }
         }
-        return true;
+        assertEquals(expected,count,"test "+testName+" failed, wrong number pf intersections\n");
     }
+    Camera camera = new Camera(Point3D.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0)).setVpDistance(1).setVpSize(3,3);
+    Camera camera2 = new Camera(new Point3D(0,0,0.5), new Vector(0, 0, -1), new Vector(0, 1, 0)).setVpDistance(1).setVpSize(3,3);
+
+    @Test
+    void integrationsCameraPlane() {
+        //EP1 9 intersections
+       testViewPlane(camera, new Plane(new Point3D(0,0,-6),new Vector(0,0,1)),9,"Plane EP1");
+
+       //EP2
+        testViewPlane(camera, new Plane(new Point3D(0,0,-6),new Vector(0,1,2)),9,"Plane EP2");
+        //EP3
+       testViewPlane(camera, new Plane(new Point3D(0,0,-6),new Vector(0,1,1)),6,"Plane EP3");
+        //EP4
+        testViewPlane(camera, new Plane(new Point3D(0,0,6),new Vector(0,0,1)),0,"Plane EP4");
+    }
+    @Test
+    void integrationsCameraSphere(){
+        //EP1
+        testViewPlane(camera,new Sphere(1,new Point3D(0,0,-3)),2,"Sphere EP1");
+
+        testViewPlane(camera2,new Sphere(2.5,new Point3D(0,0,-2.5)),18,"Sphere EP2");
+
+
+        testViewPlane(camera2,new Sphere(2,new Point3D(0,0,-2)),10,"Sphere EP3");
+
+        testViewPlane(camera,new Sphere(4,new Point3D(0,0,-1)),9,"Sphere EP4");
+
+        testViewPlane(camera,new Sphere(0.5,new Point3D(0,0,1)),0,"Sphere EP5");
+
+    }
+    @Test
+    void integrationsCameraTriangle(){
+
+        testViewPlane(camera,new Triangle(new Point3D(0,1,-2), new Point3D(1,-1,-2), new Point3D(-1,-1,-2)),1,"Triangle EP1");
+
+        testViewPlane(camera,new Triangle(new Point3D(0,20,-2), new Point3D(1,-1,-2), new Point3D(-1,-1,-2)),2,"Triangle EP2");
+
+    }
+
 }
+
