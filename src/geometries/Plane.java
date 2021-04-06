@@ -90,6 +90,7 @@ public class Plane implements Geometry {
         }
         double t = normal.dotProduct(q0.subtract(p0));
         t /= nv;
+
         if(t<=0){
             return null;
         }
