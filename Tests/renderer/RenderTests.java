@@ -5,6 +5,7 @@ import elements.*;
 import geometries.*;
 import primitives.*;
 import scene.Scene;
+import utility.*;
 
 /**
  * Test rendering a basic image
@@ -50,10 +51,7 @@ public class RenderTests {
      */
   @Test
     public void basicRenderXml() {
-        Scene scene = new Scene("XML Test scene");
-        // enter XML file name and parse from XML file into scene object
-        // ...
-
+        Scene scene = xmlParser.readXml( System.getProperty("user.dir") + "/data/basicRenderTestTwoColors.xml","XML Test scene");
         ImageWriter imageWriter = new ImageWriter("xml render test", 1000, 1000);
         Render render = new Render() //
                 .setImageWriter(imageWriter) //
