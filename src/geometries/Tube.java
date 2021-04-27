@@ -1,5 +1,6 @@
 package geometries;
 
+import java.util.LinkedList;
 import java.util.List;
 import primitives.*;
 import static primitives.Util.*;
@@ -7,15 +8,17 @@ import static primitives.Util.*;
  * Class Tube is the class representing a tube for Cartesian
  * coordinate system.
  */
-public class Tube extends RadialGeometry implements Geometry{
+public class Tube extends Geometry{
     Ray axisRay;
-     /**
+    final protected double _radius;
+
+    /**
      * ctor
      * @param axisRay central axis ray
      * @param radius tube radius
      */
     public Tube(Ray axisRay, double radius) {
-        super(radius);
+        this._radius=radius;
         this.axisRay = axisRay;
      }
 
@@ -27,7 +30,11 @@ public class Tube extends RadialGeometry implements Geometry{
         return axisRay;
     }
 
-      /**
+    public double get_radius() {
+        return _radius;
+    }
+
+    /**
      * returns normal
      * @param point
      * @return
@@ -60,5 +67,17 @@ public class Tube extends RadialGeometry implements Geometry{
     @Override
     public List<Point3D> findIntersections(Ray ray) {
         return null;
+    }
+
+    @Override
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
+        var reslut=this.findIntersections(ray);
+        List<GeoPoint> intersections = new LinkedList<GeoPoint>();
+        if(reslut==null)
+            return null;
+        for ( var item: reslut) {
+            intersections.add(new GeoPoint(this,item));
+        }
+        return intersections;
     }
 }

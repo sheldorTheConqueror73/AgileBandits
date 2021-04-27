@@ -75,4 +75,60 @@ class TriangleTest {
         //BVA3
         assertEquals(null,result,"BVA: In vertex");
     }
+    @Test
+    void findGeoIntersections() {
+        Polygon triangle = new Polygon(new Point3D(1, 4, 1.5), new Point3D(4, 2, 1), new Point3D(1.6, 1.2, 0));
+
+    List<Intersectable.GeoPoint> result = triangle.findGeoIntersections(
+            new Ray(
+                    new Point3D(2.28, 2.42, 0),
+                    new Vector(-0.28, -0.55, 0.48))
+    );
+    //EP1
+    assertEquals(List.of(new Intersectable.GeoPoint(triangle,new Point3D(2.000090119085935,1.8701770196330867,0.47984551013839705))),result,"ERROR:wrong point(EP:Inside polygon)");
+    assertEquals(List.of(new Intersectable.GeoPoint(triangle,new Point3D(2.000090119085935,1.8701770196330867,0.47984551013839705))),result,"ERROR:wrong point(EP:Inside polygon)");
+
+    result = triangle.findGeoIntersections(
+            new Ray(
+                        new Point3D(2.46, 2.7, 0),
+                        new Vector(-1.66, -0.26, 0.26))
+            );
+    //EP2
+    assertEquals(null,result,"EP: Outside against edge");
+
+    result = triangle.findGeoIntersections(
+            new Ray(
+                        new Point3D(0.65, 4.47, 2.02),
+                        new Vector(1.73, -2.01, -2.02))
+            );
+    //EP3
+    assertEquals(null,result,"EP:Outside against vertex");
+
+    result = triangle.findGeoIntersections(
+            new Ray(
+                        new Point3D(2.29, 2.41, 0),
+                        new Vector(-0.93, -0.09, 0.6))
+            );
+    //BVA1
+    assertEquals(null,result,"BVA:On edge");
+
+    result = triangle.findGeoIntersections(
+            new Ray(
+                        new Point3D(2.31, 2.28, 0),
+                        new Vector(-0.71, -1.08, 0))
+            );
+    //BVA2
+    assertEquals(null,result,"BVA: In vertex");
+
+    result = triangle.findGeoIntersections(
+            new Ray(
+                        new Point3D(1.81, 0.24, -0.52),
+                        new Vector(0.38, -1.79, -0.96))
+            );
+    //BVA3
+    assertEquals(null,result,"BVA: In vertex");
+}{
+
+    }
+
 }

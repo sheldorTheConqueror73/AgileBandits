@@ -3,6 +3,7 @@ package renderer;
 import primitives.*;
 import scene.*;
 
+
 public abstract class RayTracerBase {
     protected Scene scene;
 

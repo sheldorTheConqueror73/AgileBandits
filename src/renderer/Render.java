@@ -55,6 +55,8 @@ public class Render {
             for(int j=0;j<nX;j++){
                ray= camera.constructRayThroughPixel(nX,nY,j,i);
                color= rayTracer.traceRay(ray);
+               if(color==null)
+                   color=Color.BLACK;
                imageWriter.writePixel(j,i,color);
             }
         }

@@ -151,4 +151,59 @@ public class PolygonTest {
          assertEquals(null,result,"ERROR:wrong point");
 
     }
+    @Test
+    void findGeoIntersections() {
+        Polygon rectangle=new Polygon(new Point3D(2,4,1.5),new Point3D(6,4,1.5),new Point3D(6,2,1.5),new Point3D(2,2,1.5));
+
+        List<Intersectable.GeoPoint> result = rectangle.findGeoIntersections(
+                new Ray(
+                        new Point3D(3.67, 2.3, 0),
+                        new Vector(0.13, 0.55, 1.5))
+        );
+       // assertEquals(1,result.size(),"ERROR:");
+        // the right point
+        //EP1
+        assertEquals(List.of(new Intersectable.GeoPoint(rectangle, new Point3D(3.8,2.85,1.5))),result,"ERROR:wrong point");
+
+        result = rectangle.findGeoIntersections(
+                new Ray(
+                        new Point3D(4, 3, 0),
+                        new Vector(0, -4, 1.5))
+        );
+        //EP2
+        assertEquals(null,result,"ERROR:");
+
+        result = rectangle.findGeoIntersections(
+                new Ray(
+                        new Point3D(3.79, 3.1, 0),
+                        new Vector(-2.42, -1.54, 1.5))
+        );
+        //EP3
+        assertEquals(null,result,"ERROR:");
+
+        result = rectangle.findGeoIntersections(
+                new Ray(
+                        new Point3D(4, 3, 0),
+                        new Vector(2, -1, 1.5))
+        );
+        //BVA1 zero problem ------ to fix
+        assertEquals(null,result,"ERROR:wrong point");
+
+        result = rectangle.findGeoIntersections(
+                new Ray(
+                        new Point3D(4, 3, 0),
+                        new Vector(0, -1, 1.5))
+        );
+        //BVA2 zero problem ------ to fix
+        assertEquals(null,result,"ERROR:wrong point");
+
+        result = rectangle.findGeoIntersections(
+                new Ray(
+                        new Point3D(4, 4, 0),
+                        new Vector(-3, 0, 1.5))
+        );
+        //BVA3
+         assertEquals(null,result,"ERROR:wrong point");
+
+    }
 }

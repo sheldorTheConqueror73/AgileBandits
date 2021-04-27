@@ -2,6 +2,7 @@ package primitives;
 
 import java.util.List;
 import java.util.Objects;
+import geometries.Intersectable.GeoPoint;
 
 /**
  * Class ray is the class representing a ray for Cartesian
@@ -75,4 +76,20 @@ public class Ray {
     public Point3D getTargetPoint(double t) {
         return p0.add(dir.scale(t));
     }
+
+
+   public GeoPoint getClosestGeoPoint(List<GeoPoint> intersections){
+       GeoPoint minP=null;
+       if(intersections==null)
+           return null;
+       double distance=Double.POSITIVE_INFINITY;
+       for(var p :intersections){
+           double val=p.point.distance(p0);
+           if(val<distance){
+               distance=val;
+               minP=p;
+           }
+       }
+       return minP;
+   }
 }

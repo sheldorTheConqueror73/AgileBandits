@@ -4,6 +4,7 @@ import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.isZero;
@@ -12,7 +13,7 @@ import static primitives.Util.isZero;
  * Class Plane is the class representing a Plane for Cartesian
  * coordinate system.
  */
-public class Plane implements Geometry {
+public class Plane extends Geometry {
     Point3D q0;
     Vector normal;
 
@@ -96,5 +97,17 @@ public class Plane implements Geometry {
         }
         Point3D p = ray.getTargetPoint(t);
         return List.of(p);
+    }
+
+    @Override
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
+        var reslut=this.findIntersections(ray);
+        List<GeoPoint> intersections = new LinkedList<GeoPoint>();
+        if(reslut==null)
+            return null;
+        for ( var item: reslut) {
+            intersections.add(new GeoPoint(this,item));
+        }
+        return intersections;
     }
 }

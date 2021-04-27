@@ -4,6 +4,7 @@ import primitives.Point3D;
 import primitives.Ray;
 import primitives.Vector;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -13,9 +14,10 @@ import static primitives.Util.isZero;
  * Class Sphere is the class representing a Sphere for Cartesian
  * coordinate system.
  */
-public class Sphere extends RadialGeometry implements Geometry{
+public class Sphere extends Geometry{
 
     Point3D center;
+    final protected double _radius;
 
     /**
      * ctor
@@ -23,7 +25,7 @@ public class Sphere extends RadialGeometry implements Geometry{
      * @param radius radius of the sphere
      */
     public Sphere(double radius,Point3D center) {
-        super(radius);
+        this._radius=radius;
         this.center = center;
     }
 
@@ -33,6 +35,10 @@ public class Sphere extends RadialGeometry implements Geometry{
      */
     public Point3D getCenter() {
         return center;
+    }
+
+    public double get_radius() {
+        return _radius;
     }
 
     /**
@@ -96,5 +102,17 @@ public class Sphere extends RadialGeometry implements Geometry{
         }
         return null;
 
+    }
+
+    @Override
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
+        var reslut=this.findIntersections(ray);
+        List<GeoPoint> intersections = new LinkedList<GeoPoint>();
+        if(reslut==null)
+            return null;
+        for ( var item: reslut) {
+            intersections.add(new GeoPoint(this,item));
+        }
+        return intersections;
     }
 }

@@ -1,5 +1,6 @@
 package geometries;
 
+import primitives.Color;
 import primitives.Point3D;
 import primitives.Ray;
 
@@ -18,17 +19,19 @@ public class Geometries implements Intersectable {
     }
 
     /**
-     *  adds a geometry to intersectables
+     * adds a geometry to intersectables
+     *
      * @param intersectables intersectables to add
      */
-    public void add(Intersectable...intersectables){
-        for (Intersectable item : intersectables ) {
+    public void add(Intersectable... intersectables) {
+        for (Intersectable item : intersectables) {
             this.intersectables.add(item);
         }
     }
 
     /**
      * ctor
+     *
      * @param intersectables
      */
     public Geometries(Intersectable... intersectables) {
@@ -38,21 +41,34 @@ public class Geometries implements Intersectable {
 
     /**
      * finds intersections with geometry and ray
+     *
      * @param ray ray to intersect
      * @return a list of intersection points or null if there are none
      */
     @Override
     public List<Point3D> findIntersections(Ray ray) {
         List<Point3D> result = null;
-        for (Intersectable item: this.intersectables ) {
+        for (Intersectable item : this.intersectables) {
             List<Point3D> itemPoints = item.findIntersections(ray);
-            if(itemPoints!= null){
-                if(result == null){
+            if (itemPoints != null) {
+                if (result == null) {
                     result = new LinkedList<>();
                 }
                 result.addAll(itemPoints);
             }
         }
-        return  result;
+        return result;
+    }
+
+    @Override
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
+        List<GeoPoint> intersections = new LinkedList<GeoPoint>();
+        for (var element : intersectables) {
+            var reslut = element.findGeoIntersections(ray);
+            if(reslut!=null){
+            intersections.addAll(reslut);
+            }
+        }
+        return intersections.size()!=0?intersections:null;
     }
 }
