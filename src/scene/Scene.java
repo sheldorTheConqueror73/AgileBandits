@@ -1,14 +1,19 @@
 package scene;
 
 import elements.AmbientLight;
+import elements.LightSource;
 import geometries.Geometries;
 import primitives.Color;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class Scene {
     private final String name;
     public Color background;
-    public AmbientLight ambientLight;
+    public AmbientLight ambientLight= new AmbientLight(Color.BLACK,1);
     public Geometries geometries;
+    public List<LightSource> lights = new LinkedList<LightSource>();
 
 
     public Scene(String name) {
@@ -32,5 +37,8 @@ public class Scene {
         return this;
     }
 
-
+    public Scene setLights(List<LightSource> lights) {
+        this.lights = lights;
+        return this;
+    }
 }
