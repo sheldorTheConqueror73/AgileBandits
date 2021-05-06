@@ -4,6 +4,7 @@ import elements.LightSource;
 import primitives.*;
 import scene.Scene;
 import geometries.Intersectable.GeoPoint;
+import utility.tools;
 
 import static primitives.Util.alignZero;
 
@@ -53,10 +54,10 @@ public class RayTracerBasic extends RayTracerBase {
        return kd*(Math.abs(l.dotProduct(n)));//add argument l*n
    }
     private double calcSpecular(double ks,Vector l ,Vector n,Vector v,int nShininess ) {
-        Vector temp= n.scale(l.dotProduct(n));
-        Vector r = l.subtract(temp.scale(2));
+        Vector temp= n.scale(2*l.dotProduct(n));
+        Vector r = l.subtract(temp);
         Vector temp2= v.scale(-1);
-        double num=temp2.dotProduct(r);
+        double num= tools.max(0,temp2.dotProduct(r));
         return ks*(Math.pow(num,nShininess));
     }
 
