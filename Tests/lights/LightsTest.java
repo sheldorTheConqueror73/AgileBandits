@@ -35,6 +35,9 @@ import scene.Scene;
     private static Geometry sphere = new Sphere(50, new Point3D(0, 0, -50)) //
             .setEmission(new Color(java.awt.Color.BLUE)) //
             .setMaterial(new Material().setkD(0.5).setkS(0.5).setnShininess(100));
+    private static Geometry sphere2 = new Sphere(50, new Point3D(0, 0, -50)) //
+            .setEmission(new Color(java.awt.Color.BLACK)) //
+            .setMaterial(new Material().setkD(0.5).setkS(0.5).setnShininess(100));
 
 
 /**
@@ -96,7 +99,25 @@ import scene.Scene;
         render.writeToImage();
     }
 
-/**
+    @Test
+    public void sphereMulti() {
+        scene1.geometries.add(sphere2);
+        scene1.lights.add(new SpotLight(new Color(800, 0, 0), new Point3D(-10, -50, 20),1 , 0.0000000000001,
+                0.0000000000001, new Vector(60, 80, 1)));
+        scene1.lights.add(new DirectionalLight(new Color(0, 300, 0), new Vector(1, 1, -1)));
+        scene1.lights.add(new PointLight(new Color(0, 0, 1300), new Point3D(25, 10, 1), 1.1, 0.0000000000000001, 0.000000000000000001));
+
+        ImageWriter imageWriter = new ImageWriter("sphereMulti", 500, 500);
+        Render render = new Render()//
+                .setImageWriter(imageWriter) //
+                .setScene(scene1) //
+                .setCamera(camera1) //
+                .setRayTracer(new RayTracerBasic(scene1));
+        render.renderImage();
+        render.writeToImage();
+    }
+
+    /**
      * Produce a picture of a two triangles lighted by a directional light
      */
 
@@ -150,6 +171,25 @@ import scene.Scene;
                 0.0001, new Vector(-2, -2, -1)));
 
         ImageWriter imageWriter = new ImageWriter("trianglesSpot", 500, 500);
+        Render render = new Render()//
+                .setImageWriter(imageWriter) //
+                .setScene(scene2) //
+                .setCamera(camera2) //
+                .setRayTracer(new RayTracerBasic(scene2));
+        render.renderImage();
+        render.writeToImage();
+    }
+
+    @Test
+    public void trianglesMulti() {
+        scene2.geometries.add(triangle1.setMaterial(new Material().setkD(0.8).setkS(0.2).setnShininess(300)), //
+                triangle2.setMaterial(new Material().setkD(0.8).setkS(0.2).setnShininess(300)));
+        scene2.lights.add(new SpotLight(new Color(800, 0, 0), new Point3D(10, -10, -130),0.000005 , 1,
+                0.0001, new Vector(60, 80, 1)));
+        scene2.lights.add(new DirectionalLight(new Color(0, 300, 0), new Vector(1, 1, -1)));
+        scene2.lights.add(new PointLight(new Color(0, 0, 1300), new Point3D(10, -10, -130), 1, 0.0005, 0.0005));
+
+        ImageWriter imageWriter = new ImageWriter("trianglesMulti", 500, 500);
         Render render = new Render()//
                 .setImageWriter(imageWriter) //
                 .setScene(scene2) //
