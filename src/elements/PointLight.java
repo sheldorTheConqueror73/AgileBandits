@@ -23,6 +23,7 @@ public class PointLight extends Light implements LightSource{
         return getIntensity().scale(sf);
     }
 
+
     @Override
     public Vector getL(Point3D p) {
        return  new Vector(p.subtract(pos).getHead()).normalized();

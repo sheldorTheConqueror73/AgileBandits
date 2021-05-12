@@ -13,6 +13,11 @@ public class RayTracerBasic extends RayTracerBase {
         super(_scene);
     }
 
+    /**
+     * traces ray and calcs color
+     * @param ray ray to trace
+     * @return
+     */
     @Override
     public Color traceRay(Ray ray) {
         var intersectois = scene.geometries.findGeoIntersections(ray);
@@ -25,12 +30,24 @@ public class RayTracerBasic extends RayTracerBase {
 
     }
 
+    /**
+     * calcs color at goepoint
+     * @param point point
+     * @param ray ray
+     * @return
+     */
     Color calcColor(GeoPoint point, Ray ray) {
 
         return scene.ambientLight.getIntensity().add(point.geometry.getEmission())
                 .add(calcLocalEffects(point,ray));
     }
 
+    /**
+     * clacs local effect
+     * @param intersection intersection point
+     * @param ray ray
+     * @return
+     */
     private Color calcLocalEffects(GeoPoint intersection, Ray ray) {
         Vector v = ray.getDir();
         Vector n = intersection.geometry.getNormal(intersection.point);
@@ -50,9 +67,27 @@ public class RayTracerBasic extends RayTracerBase {
         }
         return color;
     }
+
+    /**
+     * calcs diffusive effect
+     * @param kd kd coefficient
+     * @param l l vector
+     * @param n n vector
+     * @return
+     */
    private double calcDiffusive(double kd,Vector l ,Vector n) {
        return kd*(Math.abs(l.dotProduct(n)));//add argument l*n
    }
+
+    /**
+     * calcs specular effecr
+     * @param ks ks coefficient
+     * @param l  l vector
+     * @param n n vector
+     * @param v vector
+     * @param nShininess shininess coefficient
+     * @return
+     */
     private double calcSpecular(double ks,Vector l ,Vector n,Vector v,int nShininess ) {
         Vector temp= n.scale(2*l.dotProduct(n));
         Vector r = l.subtract(temp);

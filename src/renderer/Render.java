@@ -33,6 +33,9 @@ public class Render {
         return this;
     }
 
+    /**
+     *  renders image
+     */
     public void renderImage() {
         if(imageWriter==null){
             throw new MissingResourceException("missing imagewirter","Render","ImageWriter");
@@ -62,6 +65,11 @@ public class Render {
         }
     }
 
+    /**
+     *  prints the grid on the picture
+     * @param interval grid interval
+     * @param color grid color
+     */
     public void printGrid(int interval, Color color) {
         if(imageWriter==null){
             throw new MissingResourceException("missing imagewirter","Render","ImageWriter");
@@ -77,6 +85,9 @@ public class Render {
         }
     }
 
+    /**
+     * writes to image
+     */
     public void writeToImage() {
         if(imageWriter==null){
             throw new MissingResourceException("missing imagewirter","Render","ImageWriter");
