@@ -7,6 +7,8 @@ import primitives.Vector;
 public class DirectionalLight extends Light implements LightSource{
     private Vector direction;
 
+
+
     public DirectionalLight(Color intensity,Vector dir) {
         super(intensity);
         direction=dir.normalized();
@@ -20,5 +22,10 @@ public class DirectionalLight extends Light implements LightSource{
     @Override
     public Vector getL(Point3D p) {
         return direction;
+    }
+
+    @Override
+    public double getDistance(Point3D point) {
+        return Double.POSITIVE_INFINITY;
     }
 }

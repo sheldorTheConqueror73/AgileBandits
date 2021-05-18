@@ -6,6 +6,8 @@ import scene.Scene;
 import geometries.Intersectable.GeoPoint;
 import utility.tools;
 
+import java.util.List;
+
 import static primitives.Util.alignZero;
 
 public class RayTracerBasic extends RayTracerBase {
@@ -13,6 +15,7 @@ public class RayTracerBasic extends RayTracerBase {
         super(_scene);
     }
 
+    private static final double DELTA = 0.1;
     /**
      * traces ray and calcs color
      * @param ray ray to trace
@@ -60,9 +63,11 @@ public class RayTracerBasic extends RayTracerBase {
         for (LightSource lightSource : scene.lights) {
             Vector l = lightSource.getL(intersection.point);
             double nl = alignZero(n.dotProduct(l));
-            if (nl * nv > 0) { // sign(nl) == sing(nv)
-                Color lightIntensity = lightSource.getIntensity(intersection.point);
-                color = color.add(lightIntensity.scale(calcDiffusive(kd, l, n)+ calcSpecular(ks, l, n, v, nShininess)));
+            if (nl * nv > 0) {// sign(nl) == sing(nv)
+                if (unshaded(lightSource,l,n, intersection)) {
+                    Color lightIntensity = lightSource.getIntensity(intersection.point);
+                    color = color.add(lightIntensity.scale(calcDiffusive(kd, l, n) + calcSpecular(ks, l, n, v, nShininess)));
+                }
             }
         }
         return color;
@@ -95,6 +100,30 @@ public class RayTracerBasic extends RayTracerBase {
         double num= tools.max(0,temp2.dotProduct(r));
         return ks*(Math.pow(num,nShininess));
     }
+
+    /**
+     * @param light light source
+     * @param l l
+     * @param n n
+     * @param geopoint point and geometry
+     * @return true if the point isn't shaded
+     */
+    private boolean unshaded(LightSource light, Vector l, Vector n, GeoPoint geopoint) {
+        Vector lightDirection = l.scale(-1); // from point to light source
+        Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : - DELTA);
+        Point3D point = geopoint.point.add(delta);
+        Ray lightRay = new Ray(point, lightDirection);
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
+        if (intersections == null) return true;
+        double lightDistance = light.getDistance(geopoint.point);
+        for (GeoPoint gp : intersections) {
+            if (alignZero(gp.point.distance(geopoint.point)-lightDistance) <= 0)
+                return false;
+        }
+        return true;
+    }
+
+
 
 }
 
