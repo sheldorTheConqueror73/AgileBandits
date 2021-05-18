@@ -84,9 +84,10 @@ import scene.Scene;
     @Test
     public void sphereSpot() {
         scene1.geometries.add(sphere);
-        scene1.lights.add(new SpotLight(new Color(500, 300, 0), new Point3D(-50, -50, 50),new Vector(1, 1, -2)).setkC(0.00000001).setkL(1).setkQ(0.00001));
+        scene1.lights.add(new SpotLight(new Color(500, 300, 0), new Point3D(-50, -50, 50), new Vector(1, 1, -2)) //
+                .setkL(0.00001).setkQ(0.00000001));
 
-        ImageWriter imageWriter = new ImageWriter("sphereSpot", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("lightSphereSpot", 500, 500);
         Render render = new Render()//
                 .setImageWriter(imageWriter) //
                 .setCamera(camera1) //
@@ -159,9 +160,10 @@ import scene.Scene;
     public void trianglesSpot() {
         scene2.geometries.add(triangle1.setMaterial(new Material().setkD(0.5).setkS(0.5).setnShininess(300)),
                 triangle2.setMaterial(new Material().setkD(0.5).setkS(0.5).setnShininess(300)));
-        scene2.lights.add(new SpotLight(new Color(500, 250, 250), new Point3D(10, -10, -130), new Vector(-2, -2, -1)).setkC(0.000005).setkL(1).setkQ(0.0001));
+        scene2.lights.add(new SpotLight(new Color(500, 250, 250), new Point3D(10, -10, -130), new Vector(-2, -2, -1)) //
+                .setkL(0.0001).setkQ(0.000005));
 
-        ImageWriter imageWriter = new ImageWriter("trianglesSpot", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("lightTrianglesSpot", 500, 500);
         Render render = new Render()//
                 .setImageWriter(imageWriter) //
                 .setCamera(camera2) //
@@ -174,7 +176,8 @@ import scene.Scene;
     public void trianglesMulti() {
         scene2.geometries.add(triangle1.setMaterial(new Material().setkD(0.8).setkS(0.2).setnShininess(300)), //
                 triangle2.setMaterial(new Material().setkD(0.8).setkS(0.2).setnShininess(300)));
-        scene2.lights.add(new SpotLight(new Color(800, 0, 0), new Point3D(10, -10, -130), new Vector(60, 80, 1)).setkC(0.000005).setkL(1).setkQ(0.0001));
+        scene2.lights.add(new SpotLight(new Color(1000, 100, 80), new Point3D(10, -10, -130), new Vector(-2, -2, -1)) //
+                        .setkL(0.0001).setkQ(0.000005));
         scene2.lights.add(new DirectionalLight(new Color(0, 300, 0), new Vector(1, 1, -1)));
         scene2.lights.add(new PointLight(new Color(0, 0, 1300), new Point3D(10, -10, -130)).setkC(1).setkL(0.0005).setkQ(0.0005));
 
