@@ -73,7 +73,7 @@ public class ShadowTests {
     }
 
     @Test
-    public void sphereTriangle1() {
+    public void sphereTriangleGeoPos1() {
         scene.geometries.add( //
                 new Sphere(60, new Point3D(0, 0, -200)) //
                         .setEmission(new Color(java.awt.Color.BLUE)) //
@@ -87,7 +87,7 @@ public class ShadowTests {
                         .setkL(1E-5).setkQ(1.5E-7));
 
         Render render = new Render(). //
-                setImageWriter(new ImageWriter("shadowSphereTriangle1", 400, 400)) //
+                setImageWriter(new ImageWriter("sphereTriangleGeoPos1", 400, 400)) //
                 .setCamera(camera) //
                 .setRayTracer(new RayTracerBasic(scene));
         render.renderImage();
@@ -95,7 +95,7 @@ public class ShadowTests {
     }
 
     @Test
-    public void sphereTriangle2() {
+    public void sphereTriangleGeoPos2() {
         scene.geometries.add( //
                 new Sphere(60, new Point3D(0, 0, -200)) //
                         .setEmission(new Color(java.awt.Color.BLUE)) //
@@ -109,7 +109,51 @@ public class ShadowTests {
                         .setkL(1E-5).setkQ(1.5E-7));
 
         Render render = new Render(). //
-                setImageWriter(new ImageWriter("shadowSphereTriangle2", 400, 400)) //
+                setImageWriter(new ImageWriter("sphereTriangleGeoPos2", 400, 400)) //
+                .setCamera(camera) //
+                .setRayTracer(new RayTracerBasic(scene));
+        render.renderImage();
+        render.writeToImage();
+    }
+
+    @Test
+    public void trianglesSphereLightPos1() {
+            scene.geometries.add( //
+                    new Sphere(60, new Point3D(0, 0, -200)) //
+                            .setEmission(new Color(java.awt.Color.BLUE)) //
+                            .setMaterial(new Material().setkD(0.5).setkS(0.5).setnShininess(30)), //
+                    new Triangle(new Point3D(-70, -40, 0), new Point3D(-40, -70, 0), new Point3D(-68, -68, -4)) //
+                            .setEmission(new Color(java.awt.Color.BLUE)) //
+                            .setMaterial(new Material().setkD(0.5).setkS(0.5).setnShininess(30)) //
+            );
+            scene.lights.add( //
+                    new SpotLight(new Color(400, 240, 0), new Point3D(-85, -85, 130), new Vector(1, 1, -3)) //
+                            .setkL(1E-5).setkQ(1.5E-7));
+
+            Render render = new Render(). //
+                    setImageWriter(new ImageWriter("trianglesSphereLightPos1", 400, 400)) //
+                    .setCamera(camera) //
+                    .setRayTracer(new RayTracerBasic(scene));
+            render.renderImage();
+            render.writeToImage();
+        }
+
+    @Test
+    public void trianglesSphereLightPos2() {
+        scene.geometries.add( //
+                new Sphere(60, new Point3D(0, 0, -200)) //
+                        .setEmission(new Color(java.awt.Color.BLUE)) //
+                        .setMaterial(new Material().setkD(0.5).setkS(0.5).setnShininess(30)), //
+                new Triangle(new Point3D(-70, -40, 0), new Point3D(-40, -70, 0), new Point3D(-68, -68, -4)) //
+                        .setEmission(new Color(java.awt.Color.BLUE)) //
+                        .setMaterial(new Material().setkD(0.5).setkS(0.5).setnShininess(30)) //
+        );
+        scene.lights.add( //
+                new SpotLight(new Color(400, 240, 0), new Point3D(-73, -73, 55), new Vector(1, 1, -3)) //
+                        .setkL(1E-5).setkQ(1.5E-7));
+
+        Render render = new Render(). //
+                setImageWriter(new ImageWriter("trianglesSphereLightPos2", 400, 400)) //
                 .setCamera(camera) //
                 .setRayTracer(new RayTracerBasic(scene));
         render.renderImage();
