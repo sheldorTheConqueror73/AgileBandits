@@ -10,8 +10,8 @@ import java.util.List;
 
 public class Scene {
     private final String name;
-    public Color background;
-    public AmbientLight ambientLight= new AmbientLight(Color.BLACK,1);
+    public Color background=Color.BLACK;
+    public AmbientLight ambientLight=new AmbientLight();
     public Geometries geometries;
     public List<LightSource> lights = new LinkedList<LightSource>();
 

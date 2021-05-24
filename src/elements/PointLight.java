@@ -21,12 +21,12 @@ public class PointLight extends Light implements LightSource{
         return this;
     }
 
-    public PointLight setkL(double kL) {
+    public PointLight setKl(double kL) {
         this.kL = kL;
         return this;
     }
 
-    public PointLight setkQ(double kQ) {
+    public PointLight setKq(double kQ) {
         this.kQ = kQ;
         return this;
     }

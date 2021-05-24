@@ -28,8 +28,8 @@ public class CameraIntegrationsTests {
         }
         assertEquals(expected,count,"test "+testName+" failed, wrong number pf intersections\n");
     }
-    Camera camera = new Camera(Point3D.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0)).setVpDistance(1).setVpSize(3,3);
-    Camera camera2 = new Camera(new Point3D(0,0,0.5), new Vector(0, 0, -1), new Vector(0, 1, 0)).setVpDistance(1).setVpSize(3,3);
+    Camera camera = new Camera(Point3D.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0)).setDistance(1).setViewPlaneSize(3,3);
+    Camera camera2 = new Camera(new Point3D(0,0,0.5), new Vector(0, 0, -1), new Vector(0, 1, 0)).setDistance(1).setViewPlaneSize(3,3);
 
     /**
      * integration with camera and plane

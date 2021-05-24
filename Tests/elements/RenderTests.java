@@ -1,9 +1,7 @@
 package elements;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
-import elements.*;
 import geometries.*;
 import primitives.*;
 import renderer.*;
@@ -17,8 +15,8 @@ import utility.xmlParser;
  */
 public class RenderTests {
     private Camera camera = new Camera(Point3D.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0)) //
-            .setVpDistance(100) //
-            .setVpSize(500, 500);
+            .setDistance(100) //
+            .setViewPlaneSize(500, 500);
 
     /**
      * Produce a scene with basic 3D model and render it into a jpeg image with a
@@ -45,7 +43,7 @@ public class RenderTests {
                 .setImageWriter(imageWriter) //
                 .setScene(scene) //
                 .setCamera(camera) //
-                .setRayTracer(new RayTracerBasic(scene));
+                .setRayTracer(new BasicRayTracer(scene));
 
         render.renderImage();
         render.printGrid(100, new Color(java.awt.Color.YELLOW));
@@ -65,7 +63,7 @@ public class RenderTests {
                 .setImageWriter(imageWriter) //
                 .setScene(scene) //
                 .setCamera(camera) //
-                .setRayTracer(new RayTracerBasic(scene));
+                .setRayTracer(new BasicRayTracer(scene));
 
         render.renderImage();
         render.printGrid(100, new Color(java.awt.Color.YELLOW));
@@ -91,7 +89,7 @@ public class RenderTests {
                 .setImageWriter(imageWriter) //
                 .setScene(scene) //
                 .setCamera(camera) //
-                .setRayTracer(new RayTracerBasic(scene));
+                .setRayTracer(new BasicRayTracer(scene));
 
         render.renderImage();
         render.printGrid(100, new Color(java.awt.Color.WHITE));

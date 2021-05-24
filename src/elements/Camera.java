@@ -84,7 +84,7 @@ public class Camera {
      * @param _height of the view plane
      * @return this camera with new view plane width and height
      */
-    public Camera setVpSize(double _width, double _height){
+    public Camera setViewPlaneSize(double _width, double _height){
         this.height=_height;
         this.width=_width;
         return this;
@@ -95,7 +95,7 @@ public class Camera {
      * @param _distance of the view plane
      * @return  this camera with new view plane distance
      */
-    public Camera setVpDistance(double _distance){
+    public Camera setDistance(double _distance){
         this.distance=_distance;
         return this;
     }
