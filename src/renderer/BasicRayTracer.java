@@ -73,7 +73,6 @@ public class BasicRayTracer extends RayTracerBase {
         }
         Color temp=calcColor(gp, ray, level-1, kkx);
         return temp.scale(kx);
-        //return (gp == null ? scene.background : calcColor(gp, ray, level-1, kkx)).scale(kx);
     }
 
     private Ray constructReflectedRay(Vector n, Point3D point, Vector v){
@@ -104,7 +103,8 @@ public class BasicRayTracer extends RayTracerBase {
         if (nv == 0)
             return Color.BLACK;
         int nShininess = intersection.geometry.getMaterial().getnShininess();
-        double kd = intersection.geometry.getMaterial().getkD(), ks = intersection.geometry.getMaterial().getkS();
+        double kd = intersection.geometry.getMaterial().getkD(),
+                ks = intersection.geometry.getMaterial().getkS();
         Color color = Color.BLACK;
         for (LightSource lightSource : scene.lights) {
             Vector l = lightSource.getL(intersection.point);
@@ -149,29 +149,6 @@ public class BasicRayTracer extends RayTracerBase {
         return ks*(Math.pow(num,nShininess));
     }
 
-    private static final double DELTA = 0.1;
-    /**
-     * @param light light source
-     * @param l l
-     * @param n n
-     * @param geopoint point and geometry
-     * @return true if the point isn't shaded
-     */
-
-    private boolean unshaded(LightSource light, Vector l, Vector n, GeoPoint geopoint) {
-        Vector lightDirection = l.scale(-1); // from point to light source
-        Vector delta = n.scale(n.dotProduct(lightDirection) > 0 ? DELTA : - DELTA);
-        Point3D point = geopoint.point.add(delta);
-        Ray lightRay = new Ray(point, lightDirection);
-        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
-        if (intersections == null) return true;
-        double lightDistance = light.getDistance(geopoint.point);
-        for (GeoPoint gp : intersections) {
-            if (alignZero(gp.point.distance(geopoint.point)-lightDistance) <= 0&&gp.geometry.getMaterial().kT == 0)
-                return false;
-        }
-        return true;
-    }
 
     private double transparency(LightSource ls, Vector l, Vector n, GeoPoint geoPoint) {
         Point3D point=geoPoint.point;

@@ -9,8 +9,8 @@ import geometries.Intersectable.GeoPoint;
  * coordinate system.
  */
 public class Ray {
-    Point3D p0;
-    Vector dir;
+    private final Point3D p0;
+    private final Vector dir;
     private static final double DELTA = 0.1;
 
     /**
