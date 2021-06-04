@@ -1,5 +1,6 @@
 package elements;
 
+import geometries.Polygon;
 import primitives.Color;
 import primitives.Point3D;
 import primitives.Vector;
@@ -7,6 +8,12 @@ import primitives.Vector;
 public class PointLight extends Light implements LightSource{
     private  Point3D pos;
     private double kC,kL,kQ;
+    private Polygon polygon;
+    private final double dis_K=10;
+
+    public Point3D getPos() {
+        return pos;
+    }
 
     public PointLight(Color intensity, Point3D pos) {
         super(intensity);
@@ -14,6 +21,11 @@ public class PointLight extends Light implements LightSource{
         this.kC=1;
         this.kL=0;
         this.kQ=0;
+    }
+
+    public PointLight setPolygon(){
+        this.polygon=new Polygon();
+        return this;
     }
 
     public PointLight setkC(double kC) {

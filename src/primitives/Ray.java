@@ -1,5 +1,6 @@
 package primitives;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import geometries.Intersectable.GeoPoint;
@@ -102,5 +103,11 @@ public class Ray {
            }
        }
        return minP;
+   }
+
+   public List<Ray> createBeam(Ray ray,Point3D p,int amount,double radius){
+        List<Ray> rays=new LinkedList<>();
+        rays.add(ray);
+        return null;
    }
 }

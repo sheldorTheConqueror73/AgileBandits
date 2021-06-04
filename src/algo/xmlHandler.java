@@ -1,4 +1,4 @@
-package utility;
+package algo;
 
 import geometries.Geometries;
 import geometries.Sphere;
@@ -10,7 +10,6 @@ import org.xml.sax.helpers.DefaultHandler;
 import scene.Scene;
 
 import javax.swing.*;
-import java.util.*;
 
 public class xmlHandler extends DefaultHandler {
 

@@ -1,11 +1,14 @@
 package renderer;
 
+import algo.SuperSampling;
 import elements.LightSource;
+import elements.PointLight;
+import elements.SpotLight;
 import primitives.*;
 import scene.Scene;
 import geometries.Intersectable.GeoPoint;
-import utility.tools;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -14,6 +17,9 @@ public class BasicRayTracer extends RayTracerBase {
     private static final int MAX_CALC_COLOR_LEVEL = 10;
     private static final double MIN_CALC_COLOR_K = 0.001;
     private static final double INITIAL_K = 1.0;
+    private static final int COUNT_RAYS=100;
+    private static final double RADIUS_SAMPLE=10.0;
+    public static final boolean flagSoftShadows=true;
 
 
 
@@ -115,7 +121,6 @@ public class BasicRayTracer extends RayTracerBase {
                     Color lightIntensity = lightSource.getIntensity(intersection.point).scale(ktr);
                     color = color.add(lightIntensity.scale(calcDiffusive(kd, l, n) + calcSpecular(ks, l, n, v, nShininess)));
                 }
-
             }
         }
         return color;
@@ -145,29 +150,47 @@ public class BasicRayTracer extends RayTracerBase {
         Vector temp= n.scale(2*l.dotProduct(n));
         Vector r = l.subtract(temp);
         Vector temp2= v.scale(-1);
-        double num= tools.max(0,temp2.dotProduct(r));
+        double num= Math.max(0,temp2.dotProduct(r));
         return ks*(Math.pow(num,nShininess));
     }
 
-
-    private double transparency(LightSource ls, Vector l, Vector n, GeoPoint geoPoint) {
-        Point3D point=geoPoint.point;
+    private double transparency(LightSource ls, Vector l, Vector n, GeoPoint geopoint) {
         Vector lightDirection = l.scale(-1); // from point to light source
-        Ray lightRay = new Ray(point, lightDirection, n);
-        double lightDistance = ls.getDistance(point);
-        var intersections = scene.geometries.findGeoIntersections(lightRay);
-        if (intersections == null){
-            return 1.0;
+        double sumKtr = 0.0, baseKtr;
+        Ray lightRay = new Ray(geopoint.point, lightDirection, n);
+        baseKtr = calKtr( geopoint, lightRay,ls);
+
+        if ( flagSoftShadows) {
+            List<Ray> beam = SuperSampling.mkRays(lightRay,
+                    geopoint.point.add(lightDirection.scale(ls.getDistance(geopoint.point))), COUNT_RAYS,RADIUS_SAMPLE);
+            for (int i = 1; i < beam.size(); i++) {
+                sumKtr += calKtr(geopoint, beam.get(i),ls);
+            }
+            baseKtr = (sumKtr + baseKtr) / beam.size();
         }
-        double ktr = 1.0;
+
+        return baseKtr;
+    }
+
+
+    private double calKtr(GeoPoint geoPoint,Ray ray,LightSource ls){
+        List<GeoPoint> intersections=scene.geometries.findGeoIntersections(ray);
+        double lightDistance=ls.getDistance(geoPoint.point);
+        double ktr=1.0;
+        if(intersections==null){
+            return ktr;
+        }
         for (GeoPoint gp : intersections) {
-            if (alignZero(gp.point.distance(point)-lightDistance) <= 0) {
+            if (alignZero(gp.point.distance(geoPoint.point)-lightDistance) <= 0) {
                 ktr *= gp.geometry.getMaterial().getKt();
-                if (ktr < MIN_CALC_COLOR_K) return 0.0;
+                if (ktr < MIN_CALC_COLOR_K){
+                    return 0.0;
+                }
             }
         }
         return ktr;
     }
+
 
 
 }

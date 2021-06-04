@@ -104,6 +104,7 @@ public class Point3D {
         return new Vector(new Point3D(this.x.coord-otherPoint.x.coord,this.y.coord-otherPoint.y.coord,this.z.coord-otherPoint.z.coord));
     }
 
+
     @Override
     public String toString() {
         return "Point3D:" +

@@ -6,7 +6,7 @@ import geometries.*;
 import primitives.*;
 import renderer.*;
 import scene.Scene;
-import utility.xmlParser;
+import algo.xmlParser;
 
 /**
  * Test rendering a basic image

@@ -4,7 +4,7 @@ import primitives.Color;
 import primitives.Point3D;
 import primitives.Util;
 import primitives.Vector;
-import utility.tools;
+
 public class SpotLight extends PointLight{
     private Vector direction;
 
@@ -22,7 +22,7 @@ public class SpotLight extends PointLight{
 
 
         var l=getL(p);
-        double sf=tools.max(0.0,Util.alignZero(direction.dotProduct(l)));
+        double sf=Math.max(0.0,Util.alignZero(direction.dotProduct(l)));
         return super.getIntensity(p).scale(sf);
     }
 }

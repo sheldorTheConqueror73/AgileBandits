@@ -5,7 +5,7 @@ import elements.*;
 import geometries.*;
 import primitives.*;
 import scene.Scene;
-import utility.*;
+import algo.*;
 
 /**
  * Test rendering a basic image
