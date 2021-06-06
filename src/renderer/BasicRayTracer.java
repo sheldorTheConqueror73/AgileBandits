@@ -17,14 +17,36 @@ public class BasicRayTracer extends RayTracerBase {
     private static final int MAX_CALC_COLOR_LEVEL = 10;
     private static final double MIN_CALC_COLOR_K = 0.001;
     private static final double INITIAL_K = 1.0;
-    private static final int COUNT_RAYS=100;
-    private static final double RADIUS_SAMPLE=10.0;
-    public static final boolean flagSoftShadows=true;
-
+    private static  int COUNT_RAYS=100;
+    private static  double RADIUS_SAMPLE=10.0;
+    public static  boolean flagSoftShadows=true;
+    private static String samplingAlgo="RANDOM";
 
 
     public BasicRayTracer(Scene _scene) {
         super(_scene);
+    }
+
+    public BasicRayTracer setSamplingAlgo(String samplingAlgo) {
+        if(samplingAlgo!="RANDOM" && samplingAlgo!="DISTRIBUTED")
+            throw new IllegalArgumentException("you must select one of the two allowed algorithems");
+        BasicRayTracer.samplingAlgo = samplingAlgo;
+        return this;
+    }
+
+    public  BasicRayTracer setCountRays(int countRays) {
+        COUNT_RAYS = countRays;
+        return this;
+    }
+
+    public  BasicRayTracer setFlagSoftShadows(boolean flagSoftShadows) {
+        BasicRayTracer.flagSoftShadows = flagSoftShadows;
+        return this;
+    }
+
+    public  BasicRayTracer setRadiusSample(double radiusSample) {
+        RADIUS_SAMPLE = radiusSample;
+        return this;
     }
 
     /**
@@ -36,7 +58,6 @@ public class BasicRayTracer extends RayTracerBase {
     public Color traceRay(Ray ray) {
         GeoPoint closestPoint = findClosestIntersection(ray);
         return closestPoint == null ? scene.background : calcColor(closestPoint, ray);
-
     }
 
 
@@ -161,8 +182,13 @@ public class BasicRayTracer extends RayTracerBase {
         baseKtr = calKtr( geopoint, lightRay,ls);
 
         if ( flagSoftShadows) {
-            List<Ray> beam = SuperSampling.mkRays(lightRay,
+            List<Ray> beam;
+            if(samplingAlgo=="DISTRIBUTED")
+                beam = SuperSampling.distributedSample(lightRay,
                     geopoint.point.add(lightDirection.scale(ls.getDistance(geopoint.point))), COUNT_RAYS,RADIUS_SAMPLE);
+            else
+                beam = SuperSampling.randomSample(lightRay,
+                        geopoint.point.add(lightDirection.scale(ls.getDistance(geopoint.point))), COUNT_RAYS,RADIUS_SAMPLE);
             for (int i = 1; i < beam.size(); i++) {
                 sumKtr += calKtr(geopoint, beam.get(i),ls);
             }
