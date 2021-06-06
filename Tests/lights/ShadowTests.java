@@ -191,32 +191,6 @@ public class ShadowTests {
         render.writeToImage();
     }
 
-    @Test
-    public void trianglesCube() {
-        scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.WHITE), 0.15));
-
-        scene.geometries.add( //
-                new Triangle(new Point3D(-150, -150, -115), new Point3D(150, -150, -135), new Point3D(75, 75, -150)) //
-                        .setMaterial(new Material().setKs(0.8).setShininess(60)), //
-                new Triangle(new Point3D(-150, -150, -115), new Point3D(-70, 70, -140), new Point3D(75, 75, -150)) //
-                        .setMaterial(new Material().setKs(0.8).setShininess(60)), //
-                new Cube(new Point3D(0,0,-100),new Point3D(-50,0,-100))
-                        .setEmission(new Color(java.awt.Color.BLUE)) //
-                        .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(30))
-        );
-        scene.lights.add( //
-                new SpotLight(new Color(700, 400, 400).scale(0.9), new Point3D(40, 40, 115), new Vector(-1, -1, -4)) //
-                        .setKl(4E-4).setKq(2E-5));
-        scene.lights.add(new PointLight(new Color(700, 400, 400).scale(0.9), new Point3D(-40, -40, 115)) //
-                .setKl(4E-4).setKq(2E-5));
-
-        Render render = new Render() //
-                .setImageWriter(new ImageWriter("shadowTrianglesCube", 600, 600)) //
-                .setCamera(camera) //
-                .setRayTracer(new BasicRayTracer(scene));
-        render.renderImage();
-        render.writeToImage();
-    }
 
     @Test
     public void SoftShadowTest() {
