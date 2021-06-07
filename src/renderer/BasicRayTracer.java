@@ -2,13 +2,9 @@ package renderer;
 
 import algo.SuperSampling;
 import elements.LightSource;
-import elements.PointLight;
-import elements.SpotLight;
 import primitives.*;
 import scene.Scene;
 import geometries.Intersectable.GeoPoint;
-
-import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -19,7 +15,7 @@ public class BasicRayTracer extends RayTracerBase {
     private static final double INITIAL_K = 1.0;
     private static  int COUNT_RAYS=100;
     private static  double RADIUS_SAMPLE=10.0;
-    public static  boolean flagSoftShadows=true;
+    public static  boolean flagSoftShadows=false;
     private static String samplingAlgo="RANDOM";
 
 

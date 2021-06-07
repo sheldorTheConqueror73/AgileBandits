@@ -1,6 +1,8 @@
 package elements;
 import primitives.*;
 
+import java.util.List;
+
 import static primitives.Util.*;
 public class Camera {
     final Point3D p0;
@@ -131,5 +133,14 @@ public class Camera {
         return new Ray(p0,vIJ);
 
     }
+    public List<Ray> sampleRaysThroughPixel(Camera paparazzi,
+                                            int nX, int nY, int j, int i,
+                                            double distance, double width, double height){
 
-}
+
+
+        return null;
+    }
+
+
+    }
