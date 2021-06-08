@@ -170,7 +170,7 @@ public class ShadowTests {
                         .setMaterial(new Material().setKs(0.8).setShininess(60)), //
                 new Triangle(new Point3D(-150, -150, -115), new Point3D(-70, 70, -140), new Point3D(75, 75, -150)) //
                         .setMaterial(new Material().setKs(0.8).setShininess(60)), //
-                new Pyramid(new Rectangle(new Point3D(-50,0,-100),new Point3D(-50,-60,-100),new Point3D(0,-50,-100),new Point3D(0,0,-100)), new Point3D(-25,-30,0))
+                new Pyramid(new Rectangle(new Point3D(-50,0,-100),new Point3D(-50,-60,-100),new Point3D(0,-60,-100),new Point3D(0,0,-100)), new Point3D(-25,-30,0))
                         .setEmission(new Color(java.awt.Color.BLUE)) //
                         .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(30))
                         .setEmission2(new Color(java.awt.Color.RED),1) //
@@ -193,14 +193,13 @@ public class ShadowTests {
 
 
     @Test
-    public void SoftShadowTest() {
+    public void SoftShadowTest(){
         long time=java.lang.System.nanoTime();
         scene = new Scene("Test scene");
         camera = new Camera(new Point3D(-1000, 450, 1000), new Vector(1, -0.4, -1), new Vector(1, 0, 1)) //
                 .setViewPlaneSize(450, 450).setDistance(1000);
         scene.setAmbientLight(new AmbientLight(new Color(java.awt.Color.WHITE), 0.15));
         Material material=new Material().setKd(0.2).setKs(0.2).setShininess(30);
-        Material material2=new Material().setKd(0.5).setKs(0.5).setShininess(30);
 
         scene.geometries.add( //
                 new Polygon(
@@ -216,7 +215,7 @@ public class ShadowTests {
                 new Sphere(10,new Point3D(-80, 80, 150)).setEmission(new Color(java.awt.Color.WHITE))
                         .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100).setKr(0.5)),
                 new Pyramid(new Rectangle(new Point3D(0, 50, 0), new Point3D(-50, 0, 0), new Point3D(-100, 50, 0),new Point3D(-50, 100, 0)),new Point3D(-50, 50, 150)).setEmission(new Color(10,60,80)) .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100).setKr(1)),
-                new Pyramid(new Rectangle(new Point3D(0, 50, 300), new Point3D(-50, 0, 300), new Point3D(-100, 50, 300),new Point3D(-50, 100, 300)),new Point3D(-50, 50, 150)).setEmission(new Color(java.awt.Color.BLUE)) .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100).setKr(1)),
+                new Pyramid(new Rectangle(new Point3D(0, 50, 300), new Point3D(-50, 0, 300), new Point3D(-100, 50, 300),new Point3D(-50, 100, 300)),new Point3D(-50, 50, 150)).setEmission(new Color(java.awt.Color.BLUE)) .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100).setKr(1)).setEmission2(new Color(50,50,200),2),
                 new Sphere(50,new Point3D(-180, -50, 50)).setEmission(new Color(java.awt.Color.BLUE)) //
                         .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(100).setKr(0.5)),
                 new Sphere(50,new Point3D(-175, 175, 50)).setEmission(new Color(255,128,0).scale(0.4)) //

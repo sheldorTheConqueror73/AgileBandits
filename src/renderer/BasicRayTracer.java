@@ -19,7 +19,7 @@ public class BasicRayTracer extends RayTracerBase {
     private static final double INITIAL_K = 1.0;
     private static  int COUNT_RAYS=100;
     private static  double RADIUS_SAMPLE=10.0;
-    public static  boolean flagSoftShadows=true;
+    public static  boolean flagSoftShadows=false;
     private static String samplingAlgo="RANDOM";
 
 
