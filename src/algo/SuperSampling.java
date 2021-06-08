@@ -90,33 +90,6 @@ public class SuperSampling {
         }
         return rays;
     }
-    public static List<Ray> beam(Ray ray, Point3D pC, double height, double width, int amountRays) {
-        List<Ray> rayList = new LinkedList<>();
-        //adding the main ray to the list
-        rayList.add(ray);
-        Vector vx = ray.getDir().getOrthogonal(),
-                vy = vx.crossProduct(ray.getDir());//two orthogonal vectors
-        double x, y;
-        Ray r;
-        for (int i = 1; i < amountRays; i++) {
-            do {
-                //create random ray in the boundary of the rectangle that doesn't exist in the list already
-                y = (Math.random() * (height)) - (height / 2) + ray.getP0().getY();//random number from -height/2 to height/2
-                x = (Math.random() * (width)) - (width / 2) + ray.getP0().getX();//random number from -width/2 to width/2
-                r = SuperSampling.constructRay(ray, pC, x, y, vx, vy);
-            } while (rayList.contains(r));// check if the new ray is already exists in the list
-            rayList.add(r);
-        }
-        return rayList;
-    }
-    private static Ray constructRay(Ray ray, Point3D pC, double x, double y, Vector vx, Vector vy) {
-        Point3D point = pC;
-        // create a new destination point (for the new vector)
-        if (!isZero(x)) point = point.add(vx.scale(x));
-        if (!isZero(y)) point = point.add(vy.scale(y));
-        return new Ray(ray.getP0(),
-                point.subtract(ray.getP0()));
-    }
 
 
 

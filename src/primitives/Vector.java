@@ -154,19 +154,5 @@ public class Vector {
         return "Vector:" +
                 "head=" + head ;
     }
-    public Vector getOrthogonal() {
-        /*if(Util.isZero(_head._x._coord)) {
-            return new Vector(0,_head._z._coord*-1,_head._y._coord).normalize();
-        }
-        return new Vector(_head._y._coord*-1,_head._x._coord,0).normalize();*/
-        if (head.x.coord <= head.y.coord && head.x.coord <= head.z.coord)
-            return new Vector(0.0, head.z.coord * -1, head.y.coord).normalize();
-        else if (head.y.coord <= head.x.coord && head.y.coord <= head.z.coord)
-            return new Vector(head.z.coord * -1, 0.0, head.x.coord).normalize();
-        else if (head.x.coord == 0 && head.y.coord == 0)
-            return new Vector(1.0, 1.0, 0.0).normalize();
-        else
-            return new Vector(head.y.coord * -1, head.x.coord, 0.0).normalize();
-    }
 
 }

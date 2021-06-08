@@ -14,35 +14,12 @@ public class Render {
     private ImageWriter imageWriter;
     private Camera camera;
     private RayTracerBase rayTracer;
-    private static  int COUNT_RAYS=100;
-    public static  boolean aaFlag=false;
-    private static String samplingAlgo="RANDOM";
-    private  static  double pixelSize;
 
 
     public Render setImageWriter(ImageWriter imageWriter) {
         this.imageWriter=imageWriter;
         return this;
     }
-
-    public Render setSamplingAlgo(String samplingAlgo) {
-        if(samplingAlgo!="RANDOM" && samplingAlgo!="DISTRIBUTED")
-            throw new IllegalArgumentException("you must select one of the two allowed algorithems");
-        Render.samplingAlgo = samplingAlgo;
-        return this;
-    }
-
-    public  Render setCountRays(int countRays) {
-        COUNT_RAYS = countRays;
-        return this;
-    }
-
-    public  Render setAAFlag(boolean flag) {
-        Render.aaFlag = flag;
-        return this;
-    }
-
-
 
     public Render setScene(Scene scene) {
         return this;
@@ -79,37 +56,18 @@ public class Render {
         Color color;
         int nX=imageWriter.getNx();
         int nY= imageWriter.getNy();
-        if(aaFlag){
-            pixelSize= camera.getHeight()/(double)nY;
-            if(pixelSize==0.0d)
-                throw new RuntimeException("Pixelsize is zero\n");
-        }
         for(int i=0;i<nY;i++){
             for(int j=0;j<nX;j++){
                ray= camera.constructRayThroughPixel(nX,nY,j,i);
-               if(aaFlag){
-                   color=new Color(Color.BLACK);
-                   Point3D center=ray.getP0().add(ray.getDir().scale(this.camera.getDistance()));
-                   List<Ray> sampleBeam;
-                   //if(samplingAlgo=="DISTRIBUTED")
-                       sampleBeam=SuperSampling.beam(ray,center, camera.getHeight()/nY,camera.getWidth()/nX,COUNT_RAYS);
-                 //  else
-                    //   sampleBeam=SuperSampling.randomSample(ray,center,COUNT_RAYS,pixelSize);
-                    sampleBeam.add(ray);
-                  for(var beamRay: sampleBeam){
-                      color.add(rayTracer.traceRay(beamRay));
-                  }
-                      color.scale(1/sampleBeam.size());
-               }
-               else{
                     color= rayTracer.traceRay(ray);
-               }
                if(color==null)
                   color=Color.BLACK;
                imageWriter.writePixel(j,i,color);
             }
         }
     }
+
+
 
     /**
      *  prints the grid on the picture

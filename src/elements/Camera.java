@@ -1,6 +1,7 @@
 package elements;
 import primitives.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.*;
@@ -133,14 +134,6 @@ public class Camera {
         return new Ray(p0,vIJ);
 
     }
-    public List<Ray> sampleRaysThroughPixel(Camera paparazzi,
-                                            int nX, int nY, int j, int i,
-                                            double distance, double width, double height){
 
 
-
-        return null;
-    }
-
-
-    }
+}
