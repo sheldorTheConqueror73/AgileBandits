@@ -6,6 +6,8 @@ import java.util.List;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+import static primitives.Util.isZero;
+
 
 public class SuperSampling {
     final static double pi2=2*Math.PI;
@@ -13,17 +15,17 @@ public class SuperSampling {
 
     /*
      * @param ray main ray
-     * @param pl light source point
+     * @param center point of beam
      * @param cnRays amount of rays (must be integer^2)
      * @param offset size of sqaure side
      * @return list of rays to sample
      */
-    public static List<Ray> randomSample(Ray ray,Point3D pl,int cnRays,double radius){
+    public static List<Ray> randomSample(Ray ray, Point3D center, int cnRays, double radius){
         Point3D pOrigin=ray.getP0(); //calc ray origin point
         List<Point3D> points=new LinkedList<>();//list of sampling points
         points.add(pOrigin); // add the original point (in order to make sure we dont sample it twice)
         Point3D pDest;       //dst point to add to point list
-        double x=pl.getX(),y=pl.getY(),z=pl.getZ(); //storing light source x,y,x for later use
+        double x=center.getX(),y=center.getY(),z=center.getZ(); //storing light source x,y,x for later use
         for(int i=0;i<cnRays;i++) {
             do {
                 double rRadius=ThreadLocalRandom.current().nextDouble(0,radius); //calc random radius from main ray
@@ -44,12 +46,12 @@ public class SuperSampling {
 
     /*
      * @param ray main ray
-     * @param pl light source point
+     * @param center point of beam
      * @param cnRays amount of rays (must be integer^2)
      * @param offset size of sqaure side
      * @return list of rays to sample
      */
-    public static List<Ray> distributedSample(Ray ray,Point3D pl,int cnRays,double offset){
+    public static List<Ray> distributedSample(Ray ray, Point3D center, int cnRays, double offset){
         double temp =Math.sqrt(cnRays);
         if(temp!=(int)temp)
             throw new IllegalArgumentException("cntRays must be a square of an int");
@@ -58,7 +60,7 @@ public class SuperSampling {
         List<Point3D> points=new LinkedList<>();
         points.add(pOrigin);
         Point3D pDest;
-        double x=pl.getX(),y=pl.getY(),z=pl.getZ();
+        double x=center.getX(),y=center.getY(),z=center.getZ();
         Point3D curr;
         int r=(int)(temp-(temp/2));
         int l=(int)(temp-r);
@@ -88,6 +90,34 @@ public class SuperSampling {
         }
         return rays;
     }
+    public static List<Ray> beam(Ray ray, Point3D pC, double height, double width, int amountRays) {
+        List<Ray> rayList = new LinkedList<>();
+        //adding the main ray to the list
+        rayList.add(ray);
+        Vector vx = ray.getDir().getOrthogonal(),
+                vy = vx.crossProduct(ray.getDir());//two orthogonal vectors
+        double x, y;
+        Ray r;
+        for (int i = 1; i < amountRays; i++) {
+            do {
+                //create random ray in the boundary of the rectangle that doesn't exist in the list already
+                y = (Math.random() * (height)) - (height / 2) + ray.getP0().getY();//random number from -height/2 to height/2
+                x = (Math.random() * (width)) - (width / 2) + ray.getP0().getX();//random number from -width/2 to width/2
+                r = SuperSampling.constructRay(ray, pC, x, y, vx, vy);
+            } while (rayList.contains(r));// check if the new ray is already exists in the list
+            rayList.add(r);
+        }
+        return rayList;
+    }
+    private static Ray constructRay(Ray ray, Point3D pC, double x, double y, Vector vx, Vector vy) {
+        Point3D point = pC;
+        // create a new destination point (for the new vector)
+        if (!isZero(x)) point = point.add(vx.scale(x));
+        if (!isZero(y)) point = point.add(vy.scale(y));
+        return new Ray(ray.getP0(),
+                point.subtract(ray.getP0()));
+    }
+
 
 
 }

@@ -183,7 +183,7 @@ public class ShadowTests {
         scene.lights.add(new PointLight(new Color(700, 400, 400).scale(0.9), new Point3D(-40, -40, 115)) //
                 .setKl(4E-4).setKq(2E-5));
 
-        Render render = new Render() //
+        Render render = new Render().setAAFlag(true).setSamplingAlgo("DISTRIBUTED")//
                 .setImageWriter(new ImageWriter("shadowTrianglesPyramid", 600, 600)) //
                 .setCamera(camera) //
                 .setRayTracer(new BasicRayTracer(scene));
@@ -258,8 +258,6 @@ public class ShadowTests {
         long end=java.lang.System.nanoTime()-time;
         System.out.println(end/1000000000);
     }
-
-
 
 
 }

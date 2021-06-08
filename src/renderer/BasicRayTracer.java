@@ -2,13 +2,9 @@ package renderer;
 
 import algo.SuperSampling;
 import elements.LightSource;
-import elements.PointLight;
-import elements.SpotLight;
 import primitives.*;
 import scene.Scene;
 import geometries.Intersectable.GeoPoint;
-
-import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
