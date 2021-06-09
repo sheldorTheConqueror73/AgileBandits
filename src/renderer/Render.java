@@ -2,8 +2,8 @@ package renderer;
 
 import primitives.*;
 import elements.*;
-import scene.Scene;
 
+import java.util.List;
 import java.util.MissingResourceException;
 
 /**
@@ -26,6 +26,9 @@ public class Render {
     private int threadsCount = 0;
     private static final int SPARE_THREADS = 2; // Spare threads if trying to use all the cores
     private boolean print = false; // printing progress percentage
+
+    private static boolean adaptiveSampleFlag = false;
+    private static int adaptiveSampleLevel=3;
 
     /**
      * Set multi-threading <br>
@@ -199,7 +202,6 @@ public class Render {
         return this;
     }
 
-
     /**
      * Ray tracer setter
      *
@@ -221,6 +223,16 @@ public class Render {
         imageWriter.writeToImage();
     }
 
+    public Render setAdaptiveSampleLevel(int adaptiveSampleLevel) {
+        Render.adaptiveSampleLevel = adaptiveSampleLevel;
+        return this;
+    }
+
+    public Render setAdaptiveSampleFlag(boolean adaptiveSampleFlag) {
+        Render.adaptiveSampleFlag = adaptiveSampleFlag;
+        return this;
+    }
+
     /**
      * Cast ray from camera in order to color a pixel
      * @param nX resolution on X axis (number of pixels in row)
@@ -231,6 +243,14 @@ public class Render {
     private void castRay(int nX, int nY, int col, int row) {
         Ray ray = camera.constructRayThroughPixel(nX, nY, col, row);
         Color color = tracer.traceRay(ray);
+        if (!adaptiveSampleFlag) {
+            ray = camera.constructRayThroughPixel(nX, nY, col,row);
+            color = tracer.traceRay(ray);
+
+        } else {
+            List<Point3D> corners=camera.calcCorners(nX,nY,col,row);
+            color =  tracer.adaptiveTrace(corners.get(0),corners.get(1),corners.get(2),corners.get(3),camera.getP0(),adaptiveSampleLevel);
+        }
         imageWriter.writePixel(col, row, color);
     }
 
@@ -280,13 +300,16 @@ public class Render {
             throw new MissingResourceException(RESOURCE_ERROR, RENDER_CLASS, CAMERA_COMPONENT);
         if (tracer == null)
             throw new MissingResourceException(RESOURCE_ERROR, RENDER_CLASS, RAY_TRACER_COMPONENT);
-
+        Ray ray;
+        Color color;
         final int nX = imageWriter.getNx();
         final int nY = imageWriter.getNy();
         if (threadsCount == 0)
             for (int i = 0; i < nY; ++i)
-                for (int j = 0; j < nX; ++j)
+                for (int j = 0; j < nX; ++j){
                     castRay(nX, nY, j, i);
+                }
+
         else
             renderImageThreaded();
     }

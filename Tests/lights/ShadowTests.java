@@ -181,13 +181,13 @@ public class ShadowTests {
         scene.lights.add( //
                 new SpotLight(new Color(700, 400, 400).scale(0.9), new Point3D(40, 40, 115), new Vector(-1, -1, -4)) //
                         .setKl(4E-4).setKq(2E-5));
-        scene.lights.add(new PointLight(new Color(700, 400, 400).scale(0.9), new Point3D(-40, -40, 115)) //
-                .setKl(4E-4).setKq(2E-5));
+//        scene.lights.add(new PointLight(new Color(700, 400, 400).scale(0.9), new Point3D(-40, -40, 115)) //
+//                .setKl(4E-4).setKq(2E-5));
 
-        Render render = new Render().setMultithreading(3)
+        Render render = new Render().setMultithreading(3).setAdaptiveSampleFlag(true)
                 .setImageWriter(new ImageWriter("shadowTrianglesPyramid", 600, 600)) //
                 .setCamera(camera) //
-                .setRayTracer(new BasicRayTracer(scene).setFlagSoftShadows(true));
+                .setRayTracer(new BasicRayTracer(scene).setFlagSoftShadows(false));
         render.renderImage();
         render.writeToImage();
 
@@ -252,7 +252,7 @@ public class ShadowTests {
         scene.lights.add(new SpotLight(new Color(1020, 400, 400).scale(0.3), new Point3D(0, 0, 350), new Vector(-1, 1, -1)) //
                 .setKl(0.00001).setKq(0.000005));
 
-        Render render = new Render() //
+        Render render = new Render().setAdaptiveSampleFlag(true) //
                 .setImageWriter(new ImageWriter("softShadows3", 600, 600)) //
                 .setCamera(camera) //
                 .setRayTracer(new BasicRayTracer(scene).setFlagSoftShadows(true));
@@ -373,7 +373,7 @@ public class ShadowTests {
 //        scene.lights.add(new SpotLight(new Color(1020, 400, 400).scale(1), new Point3D(-50, 50, -250), new Vector(1, 0, -0.7)) //
 //                .setKl(0.00001).setKq(0.000005));
 
-        Render render = new Render().setMultithreading(3) //
+        Render render = new Render().setMultithreading(3).setAdaptiveSampleFlag(true) //
                 .setImageWriter(new ImageWriter("miniProject2", 600, 600)) //
                 .setCamera(camera) //
                 .setRayTracer(new BasicRayTracer(scene).setFlagSoftShadows(false));
