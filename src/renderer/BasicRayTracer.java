@@ -5,6 +5,8 @@ import elements.LightSource;
 import primitives.*;
 import scene.Scene;
 import geometries.Intersectable.GeoPoint;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import static primitives.Util.alignZero;
@@ -35,6 +37,7 @@ public class BasicRayTracer extends RayTracerBase {
         return this;
     }
 
+
     public  BasicRayTracer setFlagSoftShadows(boolean flagSoftShadows) {
         BasicRayTracer.flagSoftShadows = flagSoftShadows;
         return this;
@@ -55,7 +58,10 @@ public class BasicRayTracer extends RayTracerBase {
         GeoPoint closestPoint = findClosestIntersection(ray);
         return closestPoint == null ? scene.background : calcColor(closestPoint, ray);
     }
-
+    @Override
+    public  Color adaptiveTrace(Point3D c0,Point3D c1,Point3D c2,Point3D c3,Point3D camPos,int level ){
+        return adaptiveCalc(c0,c1,c2,c3,camPos,level);
+    }
 
     private Color calcColor(GeoPoint geoPoint, Ray ray) {
         return calcColor(geoPoint, ray, MAX_CALC_COLOR_LEVEL, INITIAL_K)
@@ -211,6 +217,36 @@ public class BasicRayTracer extends RayTracerBase {
             }
         }
         return ktr;
+    }
+
+    public Color adaptiveCalc(Point3D p0,Point3D p1,Point3D p2,Point3D p3,Point3D camPos,int level){
+        List<Point3D> edges= List.of(p1,p2,p3);
+        List<Color> colors= new ArrayList<Color>();
+        for (int i=0;i<4;i++){
+            Ray ray= new Ray(camPos,edges.get(i).subtract(camPos).normalized());
+            GeoPoint point= findClosestIntersection(ray);
+            if(point!=null){
+                colors.add(calcColor(point,ray));
+            }
+            else{
+                colors.add(scene.background);
+            }
+        }
+            if((colors.get(0).equals(colors.get(1))&&colors.get(0).equals(colors.get(2))&&colors.get(0).equals(colors.get(3))) || level==0){
+                return colors.get(0);
+            }
+            Point3D up=edges.get(0).middleOf(edges.get(1));
+            Point3D down=edges.get(2).middleOf(edges.get(3));
+            Point3D r=edges.get(1).middleOf(edges.get(3));
+            Point3D l=edges.get(0).middleOf(edges.get(2));
+            Point3D center=r.middleOf(l);
+
+
+            return adaptiveCalc(edges.get(0),up,l,center,camPos,level-1).scale(0.25d)
+                    .add(adaptiveCalc(up,edges.get(1),center,r,camPos,level-1).scale(0.25d))
+                    .add(adaptiveCalc(l,center,edges.get(2),down,camPos,level-1).scale(0.25d))
+                    .add(adaptiveCalc(center,r,down,edges.get(3),camPos,level-1).scale(0.25d));
+
     }
 
 

@@ -103,7 +103,12 @@ public class Point3D {
     public Vector subtract(Point3D otherPoint){
         return new Vector(new Point3D(this.x.coord-otherPoint.x.coord,this.y.coord-otherPoint.y.coord,this.z.coord-otherPoint.z.coord));
     }
-
+    public Point3D middleOf(Point3D p2){
+        double x=(this.x.coord+p2.x.coord)/2;
+        double y=(this.y.coord+p2.y.coord)/2;
+        double z=(this.z.coord+p2.z.coord)/2;
+        return new Point3D(x,y,z);
+    }
 
     @Override
     public String toString() {

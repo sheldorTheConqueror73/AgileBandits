@@ -134,6 +134,23 @@ public class Camera {
         return new Ray(p0,vIJ);
 
     }
+    public List<Point3D> calcCorners(int nX,int nY,int i, int j){
+        double rY=height/nY;
+        double rX=width/nX;
+
+        Point3D pc=p0.add(vTo.scale(distance));
+        Point3D pZero=new Point3D(pc.getX()-width/2,pc.getY()+height/2, pc.getZ());
+
+        double dX=rX*j;
+        double dY=rY*i;
+
+        List<Point3D> corners= new LinkedList<>();
+        corners.add(new Point3D(pZero.getX()+(dX),pZero.getY()+(dY),pZero.getZ()));//top left
+        corners.add(new Point3D(pZero.getX()+(dX)+rX,pZero.getY()+(dY),pZero.getZ()));//top right
+        corners.add(new Point3D(pZero.getX()+(dX),pZero.getY()+dY-rY,pZero.getZ()));//bottom left
+        corners.add(new Point3D(pZero.getX()+(dX)+rX,pZero.getY()+dY-rY,pZero.getZ()));//bottom right
+        return corners;
+    }
 
 
 }
