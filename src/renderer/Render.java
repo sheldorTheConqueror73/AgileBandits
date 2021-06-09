@@ -248,7 +248,7 @@ public class Render {
             color = tracer.traceRay(ray);
 
         } else {
-            List<Point3D> corners=camera.calcCorners(nX,nY,col,row);
+            List<Point3D> corners=camera.calcCorners(nX,nY,col,row, ray.getDir());
             color =  tracer.adaptiveTrace(corners.get(0),corners.get(1),corners.get(2),corners.get(3),camera.getP0(),adaptiveSampleLevel);
         }
         imageWriter.writePixel(col, row, color);
