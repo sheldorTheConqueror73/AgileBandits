@@ -69,9 +69,6 @@ public class Geometries implements Intersectable {
             intersections.addAll(reslut);
             }
         }
-        int a=0;
-        if(intersections.size()!=0)
-            a=1;
         return intersections.size()!=0?intersections:null;
     }
 }
