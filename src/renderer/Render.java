@@ -241,14 +241,15 @@ public class Render {
      * @param row pixel's row number (pixel index in column)
      */
     private void castRay(int nX, int nY, int col, int row) {
-        Ray ray = camera.constructRayThroughPixel(nX, nY, col, row);
-        Color color = tracer.traceRay(ray);
+        double rY=camera.getHeight()/nY;
+        double rX=camera.getWidth()/nX;
+        Ray ray = camera.constructRayThroughPixel(nX, nY, col, row,rX,rY);
+        Color color;
         if (!adaptiveSampleFlag) {
-            ray = camera.constructRayThroughPixel(nX, nY, col,row);
             color = tracer.traceRay(ray);
 
         } else {
-            List<Point3D> corners=camera.calcCorners(nX,nY,col,row, ray.getDir());
+            List<Point3D> corners=camera.calcCorners(nX,nY,col,row, ray.getDir(),rX,rY);
             color =  tracer.adaptiveTrace(corners.get(0),corners.get(1),corners.get(2),corners.get(3),camera.getP0(),adaptiveSampleLevel);
         }
         imageWriter.writePixel(col, row, color);
@@ -300,8 +301,6 @@ public class Render {
             throw new MissingResourceException(RESOURCE_ERROR, RENDER_CLASS, CAMERA_COMPONENT);
         if (tracer == null)
             throw new MissingResourceException(RESOURCE_ERROR, RENDER_CLASS, RAY_TRACER_COMPONENT);
-        Ray ray;
-        Color color;
         final int nX = imageWriter.getNx();
         final int nY = imageWriter.getNy();
         if (threadsCount == 0)

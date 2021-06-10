@@ -111,11 +111,10 @@ public class Camera {
      * @param i the row index of the pixel
      * @return ray of specific pixel
      */
-    public Ray constructRayThroughPixel(int nX, int nY, int j, int i){
+    public Ray constructRayThroughPixel(int nX, int nY, int j, int i,double rX,double rY){
         Point3D pc=p0.add(vTo.scale(distance));
 
-        double rY=height/nY;
-        double rX=width/nX;
+
 
         double yI=-(i-(nY-1)/2d)*rY;
         double xJ=(j-(nX-1)/2d)*rX;
@@ -134,10 +133,9 @@ public class Camera {
         return new Ray(p0,vIJ);
 
     }
-    public List<Point3D> calcCorners(int nX,int nY,int i, int j,Vector pc){
+    public List<Point3D> calcCorners(int nX,int nY,int i, int j,Vector pc,double rX,double rY){
         Point3D pIJ=p0.add(pc.scale(distance));
-        double rY=height/nY;
-        double rX=width/nX;
+
 
         List<Point3D> corners= new LinkedList<>();
         corners.add(new Point3D(pIJ.getX()-rX/2,pIJ.getY()+rY/2,pIJ.getZ()));//top left

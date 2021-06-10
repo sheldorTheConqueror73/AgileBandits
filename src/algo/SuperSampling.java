@@ -6,7 +6,6 @@ import java.util.List;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-import static primitives.Util.isZero;
 
 
 public class SuperSampling {
@@ -59,9 +58,7 @@ public class SuperSampling {
         Point3D pOrigin=ray.getP0();//get src
         List<Point3D> points=new LinkedList<>();
         points.add(pOrigin);//add src point to list
-        Point3D pDest;
         double x=center.getX(),y=center.getY(),z=center.getZ();//calc x,y,z of dst point
-        Point3D curr;
         int r=(int)(temp-(temp/2));//calc right side of pixel
         int l=(int)(temp-r);//left side of pixel
         int j=1;//to avoid sampling the main ray twice
@@ -69,7 +66,6 @@ public class SuperSampling {
             if(i!=0)
                 j=0;//to avoid sampling the main ray twice
             for(;j<temp;j++){
-                curr=new Point3D(x+(interval*i),y+(interval*j),z);
                 double randX=ThreadLocalRandom.current().nextDouble(0,interval-EPSILON);//calc x offest
                 double randY=ThreadLocalRandom.current().nextDouble(0,interval-EPSILON);//calc y offset
                 points.add(new Point3D(x+randX,y+randY,z));//add new point
@@ -77,7 +73,6 @@ public class SuperSampling {
         }
         for(int i=0;i<l;i++) {//iterate over left side of pixel
             for(j=0;j<temp;j++){
-                curr=new Point3D(x-(interval*i),y-(interval*j),z);
                 double randX=ThreadLocalRandom.current().nextDouble(0,interval-EPSILON);
                 double randY=ThreadLocalRandom.current().nextDouble(0,interval-EPSILON);
                 points.add(new Point3D(x-randX,y-randY,z));
