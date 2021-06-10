@@ -20,11 +20,19 @@ public class BasicRayTracer extends RayTracerBase {
     public static  boolean flagSoftShadows=false;
     private static String samplingAlgo="RANDOM";
 
-
+    /**
+     * ctor
+     * @param _scene
+     */
     public BasicRayTracer(Scene _scene) {
         super(_scene);
     }
 
+    /**
+     * set super sampling's algorithm kind
+     * @param samplingAlgo string of the kind
+     * @return
+     */
     public BasicRayTracer setSamplingAlgo(String samplingAlgo) {
         if(samplingAlgo!="RANDOM" && samplingAlgo!="DISTRIBUTED")
             throw new IllegalArgumentException("you must select one of the two allowed algorithems");
@@ -32,17 +40,31 @@ public class BasicRayTracer extends RayTracerBase {
         return this;
     }
 
+    /**
+     * setter
+     * @param countRays count of rays for super Sampling
+     * @return
+     */
     public  BasicRayTracer setCountRays(int countRays) {
         COUNT_RAYS = countRays;
         return this;
     }
 
-
+    /**
+     * setter
+     * @param flagSoftShadows true if do the soft shadows algo
+     * @return
+     */
     public  BasicRayTracer setFlagSoftShadows(boolean flagSoftShadows) {
         BasicRayTracer.flagSoftShadows = flagSoftShadows;
         return this;
     }
 
+    /**
+     * setter
+     * @param radiusSample radius of the super sampling
+     * @return
+     */
     public  BasicRayTracer setRadiusSample(double radiusSample) {
         RADIUS_SAMPLE = radiusSample;
         return this;
@@ -58,11 +80,28 @@ public class BasicRayTracer extends RayTracerBase {
         GeoPoint closestPoint = findClosestIntersection(ray);
         return closestPoint == null ? scene.background : calcColor(closestPoint, ray);
     }
+
+    /**
+     * return the color of pixel
+     * @param c0 top left corner
+     * @param c1 top right corner
+     * @param c2 bottom left corner
+     * @param c3 bottom right corner
+     * @param camPos camera position
+     * @param level recursion level
+     * @return
+     */
     @Override
     public  Color adaptiveTrace(Point3D c0,Point3D c1,Point3D c2,Point3D c3,Point3D camPos,int level ){
         return adaptiveCalc(c0,c1,c2,c3,camPos,level);
     }
 
+    /**
+     * retrun pixel's color
+     * @param geoPoint geometry and point
+     * @param ray ray
+     * @return
+     */
     private Color calcColor(GeoPoint geoPoint, Ray ray) {
         return calcColor(geoPoint, ray, MAX_CALC_COLOR_LEVEL, INITIAL_K)
                 .add(scene.ambientLight.getIntensity());
@@ -83,6 +122,14 @@ public class BasicRayTracer extends RayTracerBase {
 
     }
 
+    /**
+     * return the global effect color
+     * @param gp geomtery and point
+     * @param v vector of the ray
+     * @param level recursion level
+     * @param k initial k (kt,ktr...)
+     * @return
+     */
     private Color calcGlobalEffects(GeoPoint gp, Vector v, int level, double k) {
         Color color = Color.BLACK; Vector n = gp.geometry.getNormal(gp.point);
         Material material = gp.geometry.getMaterial();
@@ -95,6 +142,15 @@ public class BasicRayTracer extends RayTracerBase {
                     calcGlobalEffect(constructRefractedRay(n,gp.point, v), level, material.kT, kkt));
         return color;
     }
+
+    /**
+     *
+     * @param ray ray
+     * @param level recrusion level
+     * @param kx the lest level
+     * @param kkx this level
+     * @return
+     */
     private Color calcGlobalEffect(Ray ray, int level, double kx, double kkx) {
         GeoPoint gp = findClosestIntersection(ray);
         if(gp==null){
@@ -104,12 +160,26 @@ public class BasicRayTracer extends RayTracerBase {
         return temp.scale(kx);
     }
 
+    /**
+     * return ray of reflected
+     * @param n normal
+     * @param point point on the geometry
+     * @param v direction of the ray
+     * @return
+     */
     private Ray constructReflectedRay(Vector n, Point3D point, Vector v){
         double temp = v.dotProduct(n)*2;
         Vector r = v.subtract(n.scale(temp));
         return new Ray(point,r,n);
     }
 
+    /**
+     * return ray of  reflaction
+     * @param n normal
+     * @param point point on the geometry
+     * @param v the ray's direction
+     * @return
+     */
     private Ray constructRefractedRay(Vector n,Point3D point,Vector v){
         return new Ray(point,v,n);
     }
@@ -177,6 +247,14 @@ public class BasicRayTracer extends RayTracerBase {
         return ks*(Math.pow(num,nShininess));
     }
 
+    /**
+     * return precent of the shadow at specific point
+     * @param ls light source
+     * @param l  vector from point to light
+     * @param n normal
+     * @param geopoint geometry and point
+     * @return
+     */
     private double transparency(LightSource ls, Vector l, Vector n, GeoPoint geopoint) {
         Vector lightDirection = l.scale(-1); // from point to light source
         double sumKtr = 0.0, baseKtr;
@@ -201,6 +279,13 @@ public class BasicRayTracer extends RayTracerBase {
     }
 
 
+    /**
+     * return the ktr
+     * @param geoPoint point and geometry
+     * @param ray vector from light to point
+     * @param ls light source
+     * @return
+     */
     private double calKtr(GeoPoint geoPoint,Ray ray,LightSource ls){
         List<GeoPoint> intersections=scene.geometries.findGeoIntersections(ray);
         double lightDistance=ls.getDistance(geoPoint.point);
@@ -219,6 +304,16 @@ public class BasicRayTracer extends RayTracerBase {
         return ktr;
     }
 
+    /**
+     * return pixel's color
+     * @param p0 top left
+     * @param p1 top right
+     * @param p2 bottom left
+     * @param p3 bottom right
+     * @param camPos camera position
+     * @param level recursion level
+     * @return
+     */
     public Color adaptiveCalc(Point3D p0,Point3D p1,Point3D p2,Point3D p3,Point3D camPos,int level){
         List<Point3D> edges= List.of(p0,p1,p2,p3);
         List<Color> colors= new ArrayList<Color>();
