@@ -184,7 +184,7 @@ public class ShadowTests {
 //        scene.lights.add(new PointLight(new Color(700, 400, 400).scale(0.9), new Point3D(-40, -40, 115)) //
 //                .setKl(4E-4).setKq(2E-5));
 
-        Render render = new Render().setMultithreading(3).setAdaptiveSampleFlag(false)
+        Render render = new Render().setMultithreading(3).setAdaptiveSampleFlag(true).setDebugPrint()
                 .setImageWriter(new ImageWriter("shadowTrianglesPyramid", 600, 600)) //
                 .setCamera(camera) //
                 .setRayTracer(new BasicRayTracer(scene).setFlagSoftShadows(false));
@@ -373,10 +373,10 @@ public class ShadowTests {
 //        scene.lights.add(new SpotLight(new Color(1020, 400, 400).scale(1), new Point3D(-50, 50, -250), new Vector(1, 0, -0.7)) //
 //                .setKl(0.00001).setKq(0.000005));
 
-        Render render = new Render().setMultithreading(3).setAdaptiveSampleFlag(false) //
-                .setImageWriter(new ImageWriter("miniProject2V2", 600, 600)) //
+        Render render = new Render().setMultithreading(3).setAdaptiveSampleFlag(true).setDebugPrint() //
+                .setImageWriter(new ImageWriter("miniProject2V3", 600, 600)) //
                 .setCamera(camera) //
-                .setRayTracer(new BasicRayTracer(scene).setFlagSoftShadows(false));
+                .setRayTracer(new BasicRayTracer(scene).setFlagSoftShadows(true));
         render.renderImage();
         render.writeToImage();
 

@@ -321,22 +321,23 @@ public class BasicRayTracer extends RayTracerBase {
             Ray ray= new Ray(camPos,edges.get(i).subtract(camPos).normalized());
             GeoPoint point= findClosestIntersection(ray);
             if(point!=null){
-                colors.add(calcColor(point,ray));
+                colors.add(calcColor(point,ray));//calc the corner's color.
             }
             else{
                 colors.add(scene.background);
             }
         }
             if((colors.get(0).equals(colors.get(1))&&colors.get(0).equals(colors.get(2))&&colors.get(0).equals(colors.get(3))) || level==0){
-                return colors.get(0);
+                return colors.get(0);//if all the corners have the same color.
             }
+            //calc the middle between two corners:
             Point3D up=edges.get(0).middleOf(edges.get(1));
             Point3D down=edges.get(2).middleOf(edges.get(3));
             Point3D r=edges.get(1).middleOf(edges.get(3));
             Point3D l=edges.get(0).middleOf(edges.get(2));
             Point3D center=r.middleOf(l);
 
-
+            //recursive color calc
             return adaptiveCalc(edges.get(0),up,l,center,camPos,level-1).scale(0.25d)
                     .add(adaptiveCalc(up,edges.get(1),center,r,camPos,level-1).scale(0.25d))
                     .add(adaptiveCalc(l,center,edges.get(2),down,camPos,level-1).scale(0.25d))
