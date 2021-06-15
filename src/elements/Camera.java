@@ -133,6 +133,8 @@ public class Camera {
         return new Ray(p0,vIJ);
 
     }
+
+
     public List<Point3D> calcCorners(int nX,int nY,int i, int j,Vector pc,double rX,double rY){
         Point3D pIJ=p0.add(pc.scale(distance));
 

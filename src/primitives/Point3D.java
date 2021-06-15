@@ -22,18 +22,34 @@ public class Point3D {
         this(_x.coord,_y.coord,_z.coord);
     }
 
+    /**
+     * return x coordinate
+     * @return
+     */
     public double getX() {
         return x.coord;
     }
 
+    /**
+     * return y coordinate
+     * @return
+     */
     public double getY() {
         return y.coord;
     }
 
+    /**
+     * return z coordinate
+     * @return
+     */
     public double getZ() {
         return z.coord;
     }
 
+    /**
+     * return zero point
+     * @return
+     */
     public static Point3D getZERO() {
         return ZERO;
     }
@@ -103,6 +119,12 @@ public class Point3D {
     public Vector subtract(Point3D otherPoint){
         return new Vector(new Point3D(this.x.coord-otherPoint.x.coord,this.y.coord-otherPoint.y.coord,this.z.coord-otherPoint.z.coord));
     }
+
+    /**
+     * calc the middle of two points
+     * @param p2 second point
+     * @return middle
+     */
     public Point3D middleOf(Point3D p2){
         double x=(this.x.coord+p2.x.coord)/2;
         double y=(this.y.coord+p2.y.coord)/2;
@@ -110,6 +132,10 @@ public class Point3D {
         return new Point3D(x,y,z);
     }
 
+    /**
+     * print the point
+     * @return
+     */
     @Override
     public String toString() {
         return "Point3D:" +
