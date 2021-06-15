@@ -70,7 +70,7 @@ public class MiniPorject {
                 .setKl(0.00001).setKq(0.000005));
 
         Render render = new Render().setAdaptiveSampleFlag(false) //
-                .setImageWriter(new ImageWriter("softShadows3", 600, 600)) //
+                .setImageWriter(new ImageWriter("MP1softShadows3", 600, 600)) //
                 .setCamera(camera) //
                 .setRayTracer(new BasicRayTracer(scene).setFlagSoftShadows(true));
         render.renderImage();
@@ -185,7 +185,7 @@ public class MiniPorject {
                 .setKl(0.00001).setKq(0.000005));
 
         Render render = new Render().setMultithreading(3).setAdaptiveSampleFlag(true).setDebugPrint() //
-                .setImageWriter(new ImageWriter("miniProject2", 1000, 1000)) //
+                .setImageWriter(new ImageWriter("MiniProject2", 1000, 1000)) //
                 .setCamera(camera) //
                 .setRayTracer(new BasicRayTracer(scene).setFlagSoftShadows(true));
         render.renderImage();
